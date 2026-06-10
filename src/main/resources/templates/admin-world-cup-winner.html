@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <!-- WORLD CUP WINNER -->
+    <div class="card shadow-sm p-4 mb-4">
+
+        <h3 class="mb-3">🏆 Ustaw mistrza świata</h3>
+
+        <div class="mb-3">
+
+            <span class="text-muted">Aktualny mistrz:</span>
+
+            <div class="fw-bold mt-1">
+
+                <span th:if="${config != null && config.worldCupWinner != null}">
+                    <img th:src="@{'/flags/' + ${config.worldCupWinner.code} + '.png'}"
+                         style="width:32px;height:32px;">
+
+                    <span th:text="${config.worldCupWinner.name}"></span>
+                </span>
+
+                <span th:if="${config == null || config.worldCupWinner == null}">
+                    Brak ustawionego mistrza
+                </span>
+
+            </div>
+
+        </div>
+
+        <form method="post" action="/admin/world-cup-winner" class="row g-3">
+
+            <div class="col-12 col-md-6">
+
+                <label class="form-label">Wybierz kraj</label>
+
+                <select class="form-select" name="countryId">
+
+                    <option th:each="c : ${countries}"
+                            th:value="${c.id}"
+                            th:text="${c.name}">
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="col-12 text-end">
+                <button class="btn btn-warning">
+                    Ustaw mistrza
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- DEADLINE -->
+    <div class="card shadow-sm p-4 mb-4">
+
+        <h3 class="mb-3">⏰ Zamknięcie typowania</h3>
+
+        <div class="mb-3">
+
+            <span class="text-muted">Aktualna data:</span>
+
+            <div class="fw-bold mt-1">
+
+                <span th:if="${config != null && config.worldCupDeadline != null}"
+                      th:text="${#temporals.format(config.worldCupDeadline, 'HH:mm dd.MM.yyyy')}">
+                </span>
+
+                <span th:if="${config == null || config.worldCupDeadline == null}">
+                    Brak ustawionej daty
+                </span>
+
+            </div>
+
+        </div>
+
+        <form method="post" action="/admin/set-deadline"
+              class="d-flex gap-2 flex-wrap">
+
+            <input type="datetime-local"
+                   name="deadline"
+                   class="form-control w-auto">
+
+            <button class="btn btn-primary">
+                Zapisz deadline
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

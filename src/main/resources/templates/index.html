@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<h1>Mecze</h1>
+
+<div th:each="m : ${matches}">
+    <p th:text="${m.homeTeam + ' - ' + m.awayTeam}"></p>
+
+    <form method="post" action="/predict">
+        <input type="hidden" name="matchId" th:value="${m.id}">
+        <input name="home" type="number">
+        <input name="away" type="number">
+        <button>Typuj</button>
+    </form>
+</div>

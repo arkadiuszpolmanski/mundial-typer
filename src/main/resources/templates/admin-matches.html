@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h3 class="text-center mb-4">⚽ Zarządzanie meczami</h3>
+
+    <div class="card p-3 mb-4 shadow-sm">
+
+        <h5>➕ Dodaj mecz</h5>
+
+        <form method="post" action="/admin/add-match"
+              class="d-flex gap-2 flex-wrap align-items-center">
+
+            <select class="form-select w-auto" name="homeTeamId">
+                <option th:each="c : ${countries}"
+                        th:value="${c.id}"
+                        th:text="${c.name}">
+                </option>
+            </select>
+
+            <span>vs</span>
+
+            <select class="form-select w-auto" name="awayTeamId">
+                <option th:each="c : ${countries}"
+                        th:value="${c.id}"
+                        th:text="${c.name}">
+                </option>
+            </select>
+
+            <input class="form-control w-auto"
+                   type="datetime-local"
+                   name="matchTime">
+
+            <button class="btn btn-success">
+                Dodaj
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- FILTERS -->
+    <div class="d-flex justify-content-center gap-2 mb-4 flex-wrap">
+
+        <a class="btn btn-outline-primary"
+           th:classappend="${type == 'all'} ? 'active'"
+           href="/admin/matches?type=all">
+            Wszystkie
+        </a>
+
+        <a class="btn btn-outline-success"
+           th:classappend="${type == 'active'} ? 'active'"
+           href="/admin/matches?type=active">
+            Aktywne
+        </a>
+
+        <a class="btn btn-outline-danger"
+           th:classappend="${type == 'live'} ? 'active'"
+           href="/admin/matches?type=live">
+            Live
+        </a>
+
+        <a class="btn btn-outline-secondary"
+           th:classappend="${type == 'finished'} ? 'active'"
+           href="/admin/matches?type=finished">
+            Zakończone
+        </a>
+
+    </div>
+
+    <!-- MATCH LIST -->
+    <div class="row g-3">
+
+        <div class="col-12" th:each="match : ${matches}">
+
+            <div class="card shadow-sm p-3">
+
+                <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
+
+                    <img th:src="@{'/flags/' + ${match.homeTeam.code} + '.png'}" class="flag" style="width:40px;height:40px;">
+
+                    <strong th:text="${match.homeTeam.name}"></strong>
+
+                    <span class="text-muted">
+
+                        <span th:if="${match.homeScore != null}">
+                            <span th:text="${match.homeScore}"></span>
+                            -
+                            <span th:text="${match.awayScore}"></span>
+                        </span>
+
+                        <span th:if="${match.homeScore == null}">
+                            vs
+                        </span>
+
+                    </span>
+
+                    <strong th:text="${match.awayTeam.name}"></strong>
+
+                    <img th:src="@{'/flags/' + ${match.awayTeam.code} + '.png'}" class="flag" style="width:40px;height:40px;">
+
+                </div>
+
+                <div class="text-center text-muted mt-2">
+                    🕒 <span th:text="${#temporals.format(match.matchTime, 'HH:mm dd.MM.yyyy')}"></span>
+                </div>
+
+                <form method="post" action="/admin/result"
+                      class="d-flex justify-content-center gap-2 flex-wrap mt-3">
+
+                    <input type="hidden" name="matchId" th:value="${match.id}">
+
+                    <input class="form-control w-auto text-center" style="max-width:90px" name="home">
+                    <input class="form-control w-auto text-center" style="max-width:90px" name="away">
+
+                    <button class="btn btn-primary">
+                        Ustaw wynik
+                    </button>
+
+                </form>
+
+                <div class="d-flex justify-content-center gap-2 mt-3">
+
+                    <a th:href="@{'/admin/edit/' + ${match.id}}"
+                       class="btn btn-outline-secondary btn-sm">
+                        Edytuj
+                    </a>
+
+                    <form method="post" action="/admin/delete-match">
+                        <input type="hidden" name="matchId" th:value="${match.id}">
+                        <button class="btn btn-outline-danger btn-sm">
+                            Usuń
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

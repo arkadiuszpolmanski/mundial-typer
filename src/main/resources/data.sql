@@ -1,0 +1,148 @@
+--INSERT INTO tournament_config (world_cup_winner_id) VALUES (NULL);
+--
+--INSERT INTO country(name, code) VALUES ('Algeria','Algeria');
+--INSERT INTO country(name, code) VALUES ('Anglia','Anglia');
+--INSERT INTO country(name, code) VALUES ('Arabia Saudyjska','ArabiaSaudyjska');
+--INSERT INTO country(name, code) VALUES ('Argentyna','Argentyna');
+--INSERT INTO country(name, code) VALUES ('Australia','Australia');
+--INSERT INTO country(name, code) VALUES ('Austria','Austria');
+--INSERT INTO country(name, code) VALUES ('Beliga','Beliga');
+--INSERT INTO country(name, code) VALUES ('Bosnia i Hercegowina','BosniaIHercegowina');
+--INSERT INTO country(name, code) VALUES ('Brazylia','Brazylia');
+--INSERT INTO country(name, code) VALUES ('Chorwacja','Chorwacja');
+--INSERT INTO country(name, code) VALUES ('Curacao','Curacao');
+--INSERT INTO country(name, code) VALUES ('Czechy','Czechy');
+--INSERT INTO country(name, code) VALUES ('Demokratyczna Republika Konga','DRKonga');
+--INSERT INTO country(name, code) VALUES ('Egipt','Egipt');
+--INSERT INTO country(name, code) VALUES ('Ekwador','Ekwador');
+--INSERT INTO country(name, code) VALUES ('Francja','Francja');
+--INSERT INTO country(name, code) VALUES ('Ghana','Ghana');
+--INSERT INTO country(name, code) VALUES ('Haiti','Haiti');
+--INSERT INTO country(name, code) VALUES ('Hiszpania','Hiszpania');
+--INSERT INTO country(name, code) VALUES ('Holandia','Holandia');
+--INSERT INTO country(name, code) VALUES ('Irak','Irak');
+--INSERT INTO country(name, code) VALUES ('Iran','Iran');
+--INSERT INTO country(name, code) VALUES ('Japonia','Japonia');
+--INSERT INTO country(name, code) VALUES ('Jordania','Jordania');
+--INSERT INTO country(name, code) VALUES ('Kanada','Kanada');
+--INSERT INTO country(name, code) VALUES ('Katar','Katar');
+--INSERT INTO country(name, code) VALUES ('Kolumbia','Kolumbia');
+--INSERT INTO country(name, code) VALUES ('Korea Południowa','KoreaPln');
+--INSERT INTO country(name, code) VALUES ('Maroko','Maroko');
+--INSERT INTO country(name, code) VALUES ('Meksyk','Meksyk');
+--INSERT INTO country(name, code) VALUES ('Niemcy','Niemcy');
+--INSERT INTO country(name, code) VALUES ('Norwegia','Norwegia');
+--INSERT INTO country(name, code) VALUES ('Nowa Zelandia','NowaZelandia');
+--INSERT INTO country(name, code) VALUES ('Panama','Panama');
+--INSERT INTO country(name, code) VALUES ('Paragwaj','Paragwaj');
+--INSERT INTO country(name, code) VALUES ('Portugalia','Portugalia');
+--INSERT INTO country(name, code) VALUES ('Republika Zielonego Przylądka','RepublikaZielonegoPrzyladka');
+--INSERT INTO country(name, code) VALUES ('Republika Południowej Afryki','RPA');
+--INSERT INTO country(name, code) VALUES ('Senegal','Senegal');
+--INSERT INTO country(name, code) VALUES ('Szkocja','Szkocja');
+--INSERT INTO country(name, code) VALUES ('Szwajcaria','Szwajcaria');
+--INSERT INTO country(name, code) VALUES ('Szwecja','Szwecja');
+--INSERT INTO country(name, code) VALUES ('Tunezja','Tunezja');
+--INSERT INTO country(name, code) VALUES ('Turcja','Turcja');
+--INSERT INTO country(name, code) VALUES ('Urugwaj','Urugwaj');
+--INSERT INTO country(name, code) VALUES ('USA','USA');
+--INSERT INTO country(name, code) VALUES ('Uzbekistan','Uzbekistan');
+--INSERT INTO country(name, code) VALUES ('Wybrzeże Kości Słoniowej','WKS');
+--
+---- użytkownik testowy
+--INSERT INTO app_user (
+--    username,
+--    password,
+--    total_points,
+--    correct3,
+--    correct1,
+--    world_cup_winner_id
+--) VALUES (
+--    'Arek',
+--    '$2a$12$RHDCFMH/neL59FIrJVEmMuSC4L1V3STuv3ToHbOQqacIhb8Ycs64u',
+--    0,
+--    0,
+--    0,
+--    1
+--);
+--
+--INSERT INTO app_user (
+--    username,
+--    password,
+--    total_points,
+--    correct3,
+--    correct1,
+--    world_cup_winner_id
+--) VALUES (
+--    'Adam',
+--    '$2a$12$RHDCFMH/neL59FIrJVEmMuSC4L1V3STuv3ToHbOQqacIhb8Ycs64u',
+--    0,
+--    0,
+--    0,
+--    2
+--);
+--
+--INSERT INTO app_user (
+--    username,
+--    password,
+--    total_points,
+--    correct3,
+--    correct1,
+--    world_cup_winner_id
+--) VALUES (
+--    'Andy',
+--    '$2a$12$RHDCFMH/neL59FIrJVEmMuSC4L1V3STuv3ToHbOQqacIhb8Ycs64u',
+--    0,
+--    0,
+--    0,
+--    1
+--);
+--
+--INSERT INTO app_user (
+--    username,
+--    password,
+--    total_points,
+--    correct3,
+--    correct1,
+--    world_cup_winner_id
+--) VALUES (
+--    'Agata',
+--    '$2a$12$RHDCFMH/neL59FIrJVEmMuSC4L1V3STuv3ToHbOQqacIhb8Ycs64u',
+--    0,
+--    0,
+--    0,
+--    null
+--);
+--
+--INSERT INTO app_user (
+--    username,
+--    password,
+--    total_points,
+--    correct3,
+--    correct1,
+--    world_cup_winner_id
+--) VALUES (
+--    'Mama',
+--    '$2a$12$RHDCFMH/neL59FIrJVEmMuSC4L1V3STuv3ToHbOQqacIhb8Ycs64u',
+--    0,
+--    0,
+--    0,
+--    1
+--);
+--
+--INSERT INTO app_user (
+--    username,
+--    password,
+--    total_points,
+--    correct3,
+--    correct1,
+--    world_cup_winner_id
+--) VALUES (
+--    'Tata',
+--    '$2a$12$RHDCFMH/neL59FIrJVEmMuSC4L1V3STuv3ToHbOQqacIhb8Ycs64u',
+--    0,
+--    0,
+--    0,
+--    2
+--);
+--

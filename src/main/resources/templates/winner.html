@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+
+        .winner-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .winner-card {
+            border-radius: 16px;
+            padding: 25px;
+        }
+
+        .title {
+            font-weight: 700;
+            text-align: center;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4 winner-container">
+
+    <!-- TITLE -->
+    <h3 class="mb-4 text-center">
+        <img src="/images/trofeum.png"
+             alt="Trofeum"
+             style="width:50px; height:50px; vertical-align: middle; margin-right: 8px;">
+        Typuj mistrza świata
+    </h3>
+
+    <!-- CARD -->
+    <div class="card shadow-sm winner-card">
+
+        <div th:if="${winnerPredictionOpen}">
+            <form method="post" action="/winner">
+
+            <!-- LABEL -->
+            <div class="mb-3 text-center">
+                <strong>Wybierz reprezentację</strong>
+            </div>
+
+            <!-- SELECT -->
+            <select name="countryId"
+                    class="form-select text-center mb-3">
+
+                <option disabled selected>
+                    -- wybierz kraj --
+                </option>
+
+                <option th:each="country : ${countries}"
+                        th:value="${country.id}"
+                        th:text="${country.name}">
+                </option>
+
+            </select>
+
+            <!-- BUTTON -->
+            <div class="text-center">
+
+                <button class="btn btn-success px-4">
+                    Zapisz typ
+                </button>
+
+            </div>
+
+        </form>
+        </div>
+
+    </div>
+
+    <div th:if="${!winnerPredictionOpen}"
+         class="alert alert-secondary">
+        🔒 Typowanie mistrza świata zostało zamknięte.
+    </div>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

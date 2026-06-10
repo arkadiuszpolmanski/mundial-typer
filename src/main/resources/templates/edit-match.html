@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+        .flag {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+        }
+
+        .team-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .vs {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .edit-card {
+            max-width: 700px;
+            margin: auto;
+            border-radius: 16px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4">
+
+    <h2 class="text-center mb-4">✏️ Edycja meczu</h2>
+
+    <div class="card shadow-sm p-4 edit-card">
+
+        <!-- HEADER PREVIEW -->
+        <div class="d-flex justify-content-center align-items-center gap-3 mb-4 flex-wrap">
+
+            <div class="team-box">
+                <img th:src="@{'/flags/' + ${match.homeTeam.code} + '.png'}"
+                     class="flag">
+                <span th:text="${match.homeTeam.name}"></span>
+            </div>
+
+            <div class="vs">VS</div>
+
+            <div class="team-box">
+                <span th:text="${match.awayTeam.name}"></span>
+                <img th:src="@{'/flags/' + ${match.awayTeam.code} + '.png'}"
+                     class="flag">
+            </div>
+
+        </div>
+
+        <form method="post" action="/admin/edit"
+              class="d-flex flex-column gap-3">
+
+            <input type="hidden"
+                   name="id"
+                   th:value="${match.id}">
+
+            <!-- TEAMS -->
+            <div class="row g-2">
+
+                <div class="col-md-6">
+
+                    <label class="form-label">Gospodarze</label>
+
+                    <select class="form-select"
+                            name="homeTeamId">
+
+                        <option th:each="c : ${countries}"
+                                th:value="${c.id}"
+                                th:text="${c.name}"
+                                th:selected="${c.id == match.homeTeam.id}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label">Goście</label>
+
+                    <select class="form-select"
+                            name="awayTeamId">
+
+                        <option th:each="c : ${countries}"
+                                th:value="${c.id}"
+                                th:text="${c.name}"
+                                th:selected="${c.id == match.awayTeam.id}">
+                        </option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+            <!-- DATE -->
+            <div>
+
+                <label class="form-label">Data meczu</label>
+
+                <input class="form-control"
+                       type="datetime-local"
+                       name="matchTime"
+                       th:value="${#temporals.format(match.matchTime, 'yyyy-MM-dd''T''HH:mm')}">
+
+            </div>
+
+            <!-- BUTTON -->
+            <div class="d-flex justify-content-center gap-2">
+
+                <button class="btn btn-success px-4">
+                    Zapisz zmiany
+                </button>
+
+                <a href="/admin/matches"
+                   class="btn btn-outline-secondary">
+                    Anuluj
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

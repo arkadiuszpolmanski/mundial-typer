@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Logowanie</title>
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        .login-card p {
+            color: #004B2D !important;
+            font-weight: 500;
+        }
+
+        .login-page {
+            position: relative;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .login-page::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background: url('/images/tlo.jpg');
+            background-size: cover;
+            background-position: center;
+
+            opacity: 1.00;
+            filter: blur(1px);
+            z-index: 0;
+        }
+
+        .login-page::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+
+            background: linear-gradient(
+                rgba(0, 75, 45, 0.92),
+                rgba(0, 168, 89, 0.88)
+            );
+
+            z-index: 1;
+        }
+
+        .login-overlay {
+            position: relative;
+            z-index: 2;
+        }
+    </style>
+</head>
+<body class="login-page">
+
+<div class="login-overlay">
+
+    <div class="login-card">
+
+        <h1>
+            <img src="/images/puchar.png"
+                 alt="Puchar"
+                 style="width:55px; height:55px; vertical-align: middle; margin-right: 8px;">
+            Mundial Typer
+        </h1>
+
+        <p>MŚ 2026 • Meksyk • USA • Kanada</p>
+
+        <form method="post" action="/login">
+
+            <input
+                    class="form-control"
+                    name="username"
+                    placeholder="Nazwa użytkownika">
+
+            <input
+                    class="form-control"
+                    type="password"
+                    name="password"
+                    placeholder="Hasło">
+
+            <button
+                    class="btn btn-success login-btn">
+                Zaloguj się
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>

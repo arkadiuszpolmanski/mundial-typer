@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<nav th:fragment="navbar"
+     class="navbar navbar-expand-xl navbar-dark bg-dark shadow-sm sticky-top">
+
+    <div class="container-fluid">
+
+        <!-- LEFT GROUP (hamburger + brand) -->
+        <div class="d-flex align-items-center gap-2">
+
+            <!-- HAMBURGER -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <a class="navbar-brand fw-bold" href="/home">
+                <img src="/images/puchar.png"
+                     alt="Puchar"
+                     style="width:55px; height:55px; vertical-align: middle; margin-right: 8px;">
+                Mundial Typer 2026
+            </a>
+
+            <div class="text-white ms-auto me-3">
+                Zalogowany jako:
+                <span th:text="${user.firstName + ' ' + user.lastName}"></span>
+            </div>
+        </div>
+
+        <!-- MENU -->
+        <div class="collapse navbar-collapse" id="mainNavbar">
+
+            <ul class="navbar-nav ms-auto mb-2">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/matches">Mecze</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/ranking">Ranking</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/winner">Mistrz Świata</a>
+                </li>
+
+                <li class="nav-item"
+                    th:if="${#authentication.name == 'Arek'}">
+                    <a class="nav-link" href="/admin">Panel admina</a>
+                </li>
+
+                <li class="nav-item">
+                    <form method="post" action="/logout" class="m-0">
+                        <button type="submit"
+                                class="nav-link border-0 bg-transparent text-white">
+                            Wyloguj
+                        </button>
+                    </form>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</nav>
+
+<div class="offcanvas offcanvas-end text-bg-dark"
+     tabindex="-1"
+     id="sideMenu">
+
+    <div class="offcanvas-header">
+
+        <h5 class="offcanvas-title">
+            🏆 Mundial Typer
+        </h5>
+
+        <button type="button"
+                class="btn-close btn-close-white"
+                data-bs-dismiss="offcanvas">
+        </button>
+
+    </div>
+
+    <div class="offcanvas-body">
+
+        <div class="list-group">
+
+            <a href="/home" class="list-group-item list-group-item-action bg-dark text-white">
+                Home
+            </a>
+
+            <a href="/matches" class="list-group-item list-group-item-action bg-dark text-white">
+                Mecze
+            </a>
+
+            <a href="/ranking" class="list-group-item list-group-item-action bg-dark text-white">
+                Ranking
+            </a>
+
+            <a href="/winner" class="list-group-item list-group-item-action bg-dark text-white">
+                Mistrz Świata
+            </a>
+
+            <a href="/admin" class="list-group-item list-group-item-action bg-dark text-white">
+                Panel admina
+            </a>
+
+        </div>
+
+        <hr class="text-secondary">
+
+        <form method="post" action="/logout">
+            <button class="btn btn-outline-light w-100">
+                Wyloguj
+            </button>
+        </form>
+
+    </div>
+
+</div>

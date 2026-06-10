@@ -1,0 +1,281 @@
+:root {
+    --primary-green: #00A859;
+    --dark-green: #004B2D;
+    --usa-blue: #002868;
+    --canada-red: #D52B1E;
+    --bg-dark: #081420;
+    --card-bg: rgba(255,255,255,0.95);
+    --text-light: #ffffff;
+}
+
+.login-page {
+    min-height: 100vh;
+    background:
+        linear-gradient(
+            rgba(0,0,0,.45),
+            rgba(0,0,0,.45)
+        ),
+        url('/images/stadium.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 0;
+}
+
+.login-overlay {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: rgba(255,255,255,.95);
+    border-radius: 20px;
+    padding: 40px;
+    text-align: center;
+    box-shadow:
+        0 10px 30px rgba(0,0,0,.25);
+}
+
+.login-card h1 {
+    color: var(--dark-green);
+    margin-bottom: 10px;
+}
+
+.login-btn {
+    width: 100%;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .banner-title {
+        font-size: 22px;
+    }
+    .banner-subtitle {
+        font-size: 13px;
+    }
+    .wc-navbar {
+        flex-direction: column;
+    }
+    .nav-tile {
+        width: 90%;
+    }
+}
+
+.btn-primary {
+    background-color: #00A859;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #008a46;
+}
+
+.logout {
+    background:
+        linear-gradient(
+            135deg,
+            #333,
+            #111
+        );
+}
+
+.nav-tile:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    color: white;
+}
+
+.banner-title {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.banner-subtitle {
+    margin-top: 5px;
+    font-size: 16px;
+    opacity: .95;
+}
+
+.offcanvas {
+    backdrop-filter: blur(12px);
+}
+
+@media (max-width: 768px) {
+    .btn-group .icon {
+        display: none;
+    }
+}
+
+body {
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 20% 20%, rgba(0, 255, 120, 0.15), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(0, 180, 255, 0.12), transparent 45%),
+        radial-gradient(circle at 50% 80%, rgba(0, 255, 140, 0.10), transparent 50%),
+        linear-gradient(135deg, #061a10, #0b2b1a, #06301d);
+    color: #eafff3;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.18) !important;
+
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+
+    border-radius: 18px;
+
+    color: #eafff3;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 18px rgba(0, 255, 120, 0.10);
+
+    transition: 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card p, .card span, .card small {
+    color: rgba(234, 255, 243, 0.9);
+}
+
+.card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: 18px;
+    background: radial-gradient(
+        circle at top left,
+        rgba(0, 255, 140, 0.08),
+        transparent 60%
+    );
+    pointer-events: none;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow:
+        0 0 18px rgba(0, 255, 120, 0.25),
+        0 0 40px rgba(0, 255, 120, 0.12);
+}
+
+.wc-navbar {
+    background: rgba(0, 0, 0, 0.35) !important;
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #00a152, #00c853);
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 200, 83, 0.18);
+    color: #eafff3;
+    font-weight: 600;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #008f47, #00b34a);
+    box-shadow: 0 0 14px rgba(0, 200, 83, 0.28);
+    transform: translateY(-1px);
+}
+
+.btn-success:active {
+    transform: translateY(0px);
+    box-shadow: 0 0 8px rgba(0, 200, 83, 0.2);
+}
+
+h1, h2, h3, h4, h5 {
+    color: #eafff3;
+}
+
+.text-muted {
+    color: rgba(234, 255, 243, 0.65) !important;
+}
+
+/* =========================
+   STADIONOWY RANKING TABLE
+   ========================= */
+
+.table {
+    --bs-table-bg: transparent !important;
+    --bs-table-striped-bg: transparent !important;
+    --bs-table-hover-bg: transparent !important;
+}
+
+/* całe tło tabeli */
+.table-wrapper {
+    padding: 10px;
+}
+
+/* WIERSZ = KARTA (jak mecz) */
+.table tbody tr {
+    background: rgba(255, 255, 255, 0.06) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 14px;
+
+    transition: 0.2s ease;
+}
+
+/* bootstrap psuje border-radius tabeli -> fix */
+.table tbody tr td:first-child {
+    border-top-left-radius: 14px;
+    border-bottom-left-radius: 14px;
+}
+
+.table tbody tr td:last-child {
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+}
+
+/* hover jak match card */
+.table tbody tr:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 0 18px rgba(0, 255, 120, 0.18);
+    background: rgba(0, 168, 89, 0.12) !important;
+}
+
+/* KOMÓRKI */
+.table td,
+.table th {
+    background: transparent !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
+    color: #eafff3 !important;
+    vertical-align: middle;
+}
+
+/* USERNAME = jak drużyna (ważne!) */
+.table tbody td:nth-child(2) {
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+/* PUNKTY wyróżnienie */
+.table tbody td:nth-child(3) {
+    font-weight: 800;
+    color: #00e676 !important;
+    font-size: 16px;
+}
+
+/* podium delikatny glow */
+td.gold {
+    background: linear-gradient(90deg, rgba(255,215,0,0.15), rgba(255,215,0,0.05)) !important;
+}
+
+td.silver {
+    background: linear-gradient(90deg, rgba(192,192,192,0.15), rgba(192,192,192,0.05)) !important;
+}
+
+td.bronze {
+    background: linear-gradient(90deg, rgba(205,127,50,0.15), rgba(205,127,50,0.05)) !important;
+}

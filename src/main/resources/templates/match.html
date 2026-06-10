@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+
+        .match-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .match-card {
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .flag {
+            width: 52px;
+            height: 52px;
+            object-fit: cover;
+        }
+
+        .team-name {
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.2;
+            word-break: break-word;
+        }
+
+        .score {
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .vs {
+            font-size: 18px;
+            color: #888;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-4 match-container">
+
+    <h3 class="mb-4 text-center">Szczegóły meczu</h3>
+
+    <!-- MATCH CARD -->
+    <div class="card shadow-sm match-card mb-4">
+
+        <div class="row align-items-center text-center">
+
+            <!-- HOME -->
+            <div class="col-5">
+
+                <img th:src="@{'/flags/' + ${match.homeTeam.code} + '.png'}"
+                     class="flag mb-2">
+
+                <div class="team-name"
+                     th:text="${match.homeTeam.name}">
+                </div>
+
+            </div>
+
+            <!-- CENTER -->
+            <div class="col-2">
+
+                <div th:if="${match.homeScore != null}" class="score">
+                    <span th:text="${match.homeScore}"></span>
+                    -
+                    <span th:text="${match.awayScore}"></span>
+                </div>
+
+                <div th:if="${match.homeScore == null}" class="vs">
+                    VS
+                </div>
+
+                <div class="text-center text-muted mt-2">
+                    <span th:text="${#temporals.format(match.matchTime, 'HH:mm dd.MM.yyyy')}"></span>
+                </div>
+
+            </div>
+
+            <!-- AWAY -->
+            <div class="col-5">
+
+                <img th:src="@{'/flags/' + ${match.awayTeam.code} + '.png'}"
+                     class="flag mb-2">
+
+                <div class="team-name"
+                     th:text="${match.awayTeam.name}">
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- YOUR PREDICTION -->
+    <div class="card shadow-sm p-3 mb-4 text-center">
+
+        <h5 class="mb-3">Twój typ</h5>
+
+        <div th:if="${myPrediction != null}" class="fw-bold fs-5">
+
+            <span th:text="${myPrediction.predictedHome}"></span>
+            -
+            <span th:text="${myPrediction.predictedAway}"></span>
+
+        </div>
+
+        <div th:if="${myPrediction == null}" class="text-muted">
+            Nie obstawiłeś tego meczu
+        </div>
+
+    </div>
+
+    <!-- BETTING -->
+    <div th:if="${!started}" class="card shadow-sm p-3 mb-4 text-center">
+
+        <h5 class="mb-3">Typuj mecz</h5>
+
+        <form method="post" action="/predict"
+              class="d-flex justify-content-center gap-2 flex-wrap">
+
+            <input type="hidden" name="matchId" th:value="${match.id}">
+
+            <input class="form-control text-center"
+                   style="max-width: 90px"
+                   type="number"
+                   min="0"
+                   name="home"
+                   placeholder="G">
+
+            <span class="align-self-center">-</span>
+
+            <input class="form-control text-center"
+                   style="max-width: 90px"
+                   type="number"
+                   min="0"
+                   name="away"
+                   placeholder="G">
+
+            <button type="submit" class="btn btn-success">
+                Zapisz typ
+            </button>
+
+        </form>
+
+    </div>
+
+    <!-- OTHER USERS -->
+    <div class="card shadow-sm p-3 mb-4">
+
+        <h5 class="text-center mb-3">Typy użytkowników</h5>
+
+        <div th:if="${started}">
+
+            <div th:each="p : ${predictions}"
+                 class="border rounded p-2 mb-2 text-center">
+
+                <strong th:text="${p.user.firstName + ' ' + p.user.lastName}"></strong>
+
+                <span>:</span>
+
+                <span th:text="${p.predictedHome}"></span>
+                -
+                <span th:text="${p.predictedAway}"></span>
+
+            </div>
+
+        </div>
+
+        <div th:if="${!started}" class="text-muted text-center">
+            🔒 Typy ukryte do rozpoczęcia meczu
+        </div>
+
+    </div>
+
+    <div class="text-center mb-4">
+
+        <a th:href="@{/matches}" class="btn btn-outline-secondary">
+            Powrót do listy meczów
+        </a>
+
+    </div>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <style>
+
+        .match-clickable {
+            cursor: pointer;
+            transition: .2s;
+        }
+
+        .match-clickable:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,.12);
+        }
+
+        .flag {
+            border-radius: 4px;
+        }
+
+        .flag-large {
+            width: 44px;
+            height: 44px;
+            object-fit: cover;
+            border-radius: 6px;
+        }
+
+        .team-name {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="container mt-3">
+
+    <!-- QUICK NAV CARDS -->
+    <div class="row justify-content-center mb-4">
+
+        <div class="col-12 col-md-6">
+
+            <div class="row g-3">
+
+                <!-- WSZYSTKIE MECZE -->
+                <div class="col-6">
+
+                    <a href="/matches"
+                       class="text-decoration-none text-dark">
+
+                        <div class="card shadow-sm p-4 text-center match-clickable h-100">
+
+                            <h6 class="mb-0 fw-bold fs-4">
+                                <img src="/images/mecze.png"
+                                     alt="Mecze"
+                                     style="width:50px; height:50px; vertical-align: middle; margin-right: 8px;">
+                                Mecze
+                            </h6>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+                <!-- RANKING -->
+                <div class="col-6">
+
+                    <a href="/ranking"
+                       class="text-decoration-none text-dark">
+
+                        <div class="card shadow-sm p-4 text-center match-clickable h-100">
+
+                            <h6 class="mb-0 fw-bold fs-4">
+                                <img src="/images/ranking.png"
+                                     alt="Ranking"
+                                     style="width:50px; height:50px; vertical-align: middle; margin-right: 8px;">
+                                Ranking
+                            </h6>
+
+                        </div>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- WORLD CUP PICK -->
+    <div class="row justify-content-center mb-4">
+
+        <div class="col-12 col-md-6">
+
+            <a href="/winner"
+               class="text-decoration-none text-dark">
+
+                <div class="card shadow-sm text-center p-4 match-clickable">
+
+                    <h5 class="mb-3">
+                        <img src="/images/trofeum.png"
+                             alt="Trofeum"
+                             style="width:50px; height:50px; vertical-align: middle; margin-right: 8px;">
+                         Twój typ na mistrza świata
+                    </h5>
+
+                    <div th:if="${user.worldCupWinner != null}">
+                        <img th:src="@{'/flags/' + ${user.worldCupWinner.code} + '.png'}"
+                             style="width:70px;height:70px;">
+                        <h6 class="mt-2"
+                            th:text="${user.worldCupWinner.name}">
+                        </h6>
+                    </div>
+
+                    <span th:if="${user.worldCupWinner == null}"
+                          class="badge bg-danger fs-6 px-3 py-2">
+                            Nie wytypowano mistrza świata
+                    </span>
+
+                    <hr>
+
+                    <!-- COUNTDOWN -->
+                    <div class="mt-2 text-center"
+                         th:if="${config != null && config.worldCupDeadline != null}">
+
+                        <small class="text-muted">Do zamknięcia typowania:</small>
+                        <div id="countdown" class="fw-bold fs-5"></div>
+
+                        <script th:inline="javascript">
+
+                            const targetTime =
+                                [[${config.worldCupDeadline != null ?
+                                config.worldCupDeadline.atZone(T(java.time.ZoneId).systemDefault()).toInstant().toEpochMilli()
+                                : 0}]];
+
+                            function updateCountdown() {
+
+                                const now = Date.now();
+                                const diff = targetTime - now;
+
+                                if (diff <= 0 || targetTime === 0) {
+                                    document.getElementById("countdown").innerHTML =
+                                        "🔒 Typowanie zamknięte";
+                                    return;
+                                }
+
+                                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                                const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+                                const minutes = Math.floor((diff / (1000 * 60)) % 60);
+                                const seconds = Math.floor((diff / 1000) % 60);
+
+                                document.getElementById("countdown").innerHTML =
+                                    days + "d " + hours + "h " + minutes + "m " + seconds + "s";
+                            }
+
+                            updateCountdown();
+                            setInterval(updateCountdown, 1000);
+
+                        </script>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <!-- MATCHES -->
+    <h5 class="mb-3">
+        <img src="/images/mecze.png"
+             alt="Mecze"
+             style="width:25px; height:25px; vertical-align: middle; margin-right: 8px;">
+        Najbliższe mecze
+    </h5>
+
+    <div class="row g-3">
+
+        <div class="col-12 col-md-8 mx-auto"
+             th:each="match, iterStat : ${matches}"
+             th:if="${iterStat.index < 4}">
+
+            <a th:href="@{'/match/' + ${match.id}}"
+               class="text-decoration-none text-dark">
+
+                <div class="card h-100 text-center p-3 shadow-sm match-clickable">
+
+                    <!-- TEAMS -->
+                    <div class="mb-2">
+
+                        <div class="row align-items-center text-center">
+
+                            <!-- HOME -->
+                            <div class="col-5">
+
+                                <img th:src="@{'/flags/' + ${match.homeTeam.code} + '.png'}"
+                                     class="flag-large">
+
+                                <div class="team-name text-truncate"
+                                     th:text="${match.homeTeam.name}">
+                                </div>
+
+                            </div>
+
+                            <!-- VS (IDEALNY ŚRODEK) -->
+                            <div class="col-2 d-flex justify-content-center align-items-center">
+
+                                <strong class="text-muted">VS</strong>
+
+                            </div>
+
+                            <!-- AWAY -->
+                            <div class="col-5">
+
+                                <img th:src="@{'/flags/' + ${match.awayTeam.code} + '.png'}"
+                                     class="flag-large">
+
+                                <div class="team-name text-truncate"
+                                     th:text="${match.awayTeam.name}">
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- TIME -->
+                    <small class="text-muted">
+                        🕒 <span th:text="${#temporals.format(match.matchTime, 'HH:mm dd.MM')}"></span>
+                    </small>
+
+                    <hr>
+
+                    <div class="mt-2 text-center">
+
+                        <!-- USER PREDICTION EXISTS -->
+                        <span th:if="${userPredictions[match.id] != null}"
+                              class="badge bg-success fs-6 px-3 py-2">
+                            Twój typ:
+                            <span class="fw-bold ms-1">
+                                <span th:text="${userPredictions[match.id].predictedHome}"></span>
+                                -
+                                <span th:text="${userPredictions[match.id].predictedAway}"></span>
+                            </span>
+
+                        </span>
+
+                        <!-- NO PREDICTION -->
+                        <span th:if="${userPredictions[match.id] == null}"
+                              class="badge bg-danger fs-6 px-3 py-2">
+                            Brak typu
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
