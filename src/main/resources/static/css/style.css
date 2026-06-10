@@ -51,7 +51,7 @@
     font-weight: bold;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .banner-title {
         font-size: 22px;
     }
@@ -106,7 +106,7 @@
     backdrop-filter: blur(12px);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
     .btn-group .icon {
         display: none;
     }
