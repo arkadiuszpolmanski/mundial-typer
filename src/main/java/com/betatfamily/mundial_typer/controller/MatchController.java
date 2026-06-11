@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,6 +106,7 @@ public class MatchController {
         Match match = matchRepository.findById(id).orElseThrow();
 
         List<Prediction> predictions = predictionRepository.findByMatchId(id);
+        predictions.sort(Comparator.comparing(p -> p.getUser().getFirstName() + " " + p.getUser().getLastName()));
 
         Prediction myPrediction = null;
 

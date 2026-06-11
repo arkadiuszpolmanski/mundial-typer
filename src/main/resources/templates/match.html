@@ -178,12 +178,33 @@
                 -
                 <span th:text="${p.predictedAway}"></span>
 
+                <span th:if="${p.match.homeScore != null}"
+                      class="badge ms-2"
+                      th:classappend="${p.points == 3} ? 'bg-success' :
+                       (${p.points == 1} ? 'bg-warning text-dark' : 'bg-secondary')"
+                      th:text="${p.points} + ' pkt'">
+                </span>
+
             </div>
 
         </div>
 
-        <div th:if="${!started}" class="text-muted text-center">
-            🔒 Typy ukryte do rozpoczęcia meczu
+        <div th:if="${!started}">
+
+            <div class="text-muted text-center">
+                🔒 Typy ukryte do rozpoczęcia meczu
+            </div>
+
+            <hr>
+
+            <div th:each="p : ${predictions}"
+                 class="border rounded p-2 mb-2 text-center">
+
+                <strong th:text="${p.user.firstName + ' ' + p.user.lastName}"></strong>
+
+                <span class="text-success"> ✔ typ oddany</span>
+
+            </div>
         </div>
 
     </div>
