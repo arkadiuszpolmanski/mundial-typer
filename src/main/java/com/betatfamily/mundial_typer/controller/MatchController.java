@@ -72,6 +72,7 @@ public class MatchController {
 
             case "finished" -> matches.stream()
                     .filter(m -> m.getHomeScore() != null && m.getAwayScore() != null)
+                    .sorted(Comparator.comparing(Match::getMatchTime).reversed())
                     .toList();
 
             case "active" -> matches.stream()

@@ -204,6 +204,27 @@
 
                 <div class="card h-100 text-center p-3 shadow-sm match-clickable">
 
+                    <!-- MATCH STATUS -->
+                    <div class="mb-2">
+
+                            <span th:switch="${matchStatus[match.id]}">
+
+                                <span th:case="'FINISHED'" class="badge bg-secondary">
+                                    ZAKOŃCZONY
+                                </span>
+
+                                <span th:case="'LIVE'" class="badge bg-danger">
+                                    LIVE
+                                </span>
+
+                                <span th:case="'UPCOMING'" class="badge bg-success">
+                                    NADCHODZĄCY
+                                </span>
+
+                            </span>
+
+                    </div>
+
                     <!-- TEAMS -->
                     <div class="mb-2">
 

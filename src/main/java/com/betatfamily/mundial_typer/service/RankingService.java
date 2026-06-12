@@ -105,6 +105,8 @@ public class RankingService {
                         .thenComparing(UserRankingDto::getWorldCupWinnerPoints, Comparator.reverseOrder())
                         .thenComparing(UserRankingDto::getCorrect3, Comparator.reverseOrder())
                         .thenComparing(UserRankingDto::getCorrect1, Comparator.reverseOrder())
+                        .thenComparing(UserRankingDto::getFirstName)
+                        .thenComparing(UserRankingDto::getLastName)
         ).toList();
     }
 

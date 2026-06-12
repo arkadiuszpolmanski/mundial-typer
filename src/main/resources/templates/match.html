@@ -126,6 +126,21 @@
 
     </div>
 
+    <div class="d-flex justify-content-center">
+
+        <div th:if="${param.error != null}"
+             class="alert alert-warning text-center"
+             style="max-width: 500px; width: 100%;">
+
+        <span th:switch="${param.error[0]}">
+            <span th:case="'too-late'">Typowanie zostało już zamknięte.</span>
+            <span th:case="'empty'">Musisz podać wynik dla obu drużyn.</span>
+        </span>
+
+        </div>
+
+    </div>
+
     <!-- BETTING -->
     <div th:if="${!started}" class="card shadow-sm p-3 mb-4 text-center">
 
@@ -141,7 +156,8 @@
                    type="number"
                    min="0"
                    name="home"
-                   placeholder="G">
+                   placeholder="G"
+                   required>
 
             <span class="align-self-center">-</span>
 
@@ -150,7 +166,8 @@
                    type="number"
                    min="0"
                    name="away"
-                   placeholder="G">
+                   placeholder="G"
+                   required>
 
             <button type="submit" class="btn btn-success">
                 Zapisz typ

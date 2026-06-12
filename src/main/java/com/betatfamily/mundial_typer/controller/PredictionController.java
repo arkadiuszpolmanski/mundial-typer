@@ -40,9 +40,14 @@ public class PredictionController {
         Match m = matchRepository.findById(matchId).get();
         User user = userRepository.findByUsername(auth.getName());
 
-        // Blokada
+        // Blokada czasu
         if (m.getMatchTime().isBefore(LocalDateTime.now())) {
-            return "redirect:/matches?error=too-late";
+            return "redirect:/match/" + matchId + "?error=too-late";
+        }
+
+        // Blokada pustych pól
+        if (home == null || away == null) {
+            return "redirect:/match/" + matchId + "?error=empty";
         }
 
         // Sprawdzamy czy typował

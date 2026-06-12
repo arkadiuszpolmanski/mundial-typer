@@ -52,10 +52,23 @@ public class HomeController {
             }
         }
 
+        Map<Long, String> matchStatus = new HashMap<>();
+        for (Match m : upcomingMatches) {
+
+            if (m.getHomeScore() != null && m.getAwayScore() != null) {
+                matchStatus.put(m.getId(), "FINISHED");
+            } else if (m.getMatchTime().isBefore(now)) {
+                matchStatus.put(m.getId(), "LIVE");
+            } else {
+                matchStatus.put(m.getId(), "UPCOMING");
+            }
+        }
+
         User user = auth != null ? userRepository.findByUsername(auth.getName()) : null;
 
         TournamentConfig config = tournamentConfig.findById(1L).orElse(null);
 
+        model.addAttribute("matchStatus", matchStatus);
         model.addAttribute("username", auth.getName());
         model.addAttribute("user", user);
         model.addAttribute("matches", upcomingMatches);
