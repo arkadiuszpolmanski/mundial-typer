@@ -6,6 +6,7 @@ import lombok.Data;
 @Data
 public class UserRankingDto {
 
+    private Long id;
     private String username;
     private String firstName;
     private String lastName;

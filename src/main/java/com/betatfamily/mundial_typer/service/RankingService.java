@@ -68,6 +68,7 @@ public class RankingService {
             dto.setCorrect3(0);
             dto.setCorrect1(0);
             dto.setWorldCupWinnerPoints(0);
+            dto.setId(u.getId());
 
             if (u.getWorldCupWinner() != null) {
                 dto.setWorldCupWinner(u.getWorldCupWinner());

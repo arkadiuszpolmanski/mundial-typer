@@ -1,6 +1,5 @@
 package com.betatfamily.mundial_typer.controller;
 
-import com.betatfamily.mundial_typer.entity.Country;
 import com.betatfamily.mundial_typer.entity.Match;
 import com.betatfamily.mundial_typer.entity.Prediction;
 import com.betatfamily.mundial_typer.entity.User;
@@ -13,7 +12,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;

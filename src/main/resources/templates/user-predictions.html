@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Typy użytkownika</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar}"></div>
+
+<div class="mb-3 text-start">
+
+    <a href="/ranking"
+       class="btn btn-outline-success btn-sm">
+        ← Powrót do rankingu
+    </a>
+
+</div>
+
+<div class="container mt-4">
+
+    <div class="card shadow-sm p-4">
+
+        <h3 class="text-center mb-4"
+            th:text="'Typy użytkownika: ' + ${user.firstName} + ' ' + ${user.lastName}">
+        </h3>
+
+        <div class="table-responsive">
+
+            <table class="table table-hover align-middle">
+
+                <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Mecz</th>
+                    <th>Typ</th>
+                    <th>Wynik</th>
+                    <th>Pkt</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <tr th:each="p : ${predictions}"
+                    th:if="${p.match.homeScore != null && p.match.awayScore != null}">
+
+                    <!-- DATA -->
+                    <td>
+                        <span th:text="${#temporals.format(p.match.matchTime, 'dd.MM HH:mm')}"></span>
+                    </td>
+
+                    <!-- MECZ -->
+                    <td>
+                        <span th:text="${p.match.homeTeam.name}"></span>
+                        -
+                        <span th:text="${p.match.awayTeam.name}"></span>
+                    </td>
+
+                    <!-- TYP -->
+                    <td>
+                        <strong>
+                            <span th:text="${p.predictedHome}"></span>
+                            -
+                            <span th:text="${p.predictedAway}"></span>
+                        </strong>
+                    </td>
+
+                    <!-- WYNIK -->
+                    <td>
+
+                        <span th:if="${p.match.homeScore != null}">
+
+                            <span th:text="${p.match.homeScore}"></span>
+                            -
+                            <span th:text="${p.match.awayScore}"></span>
+
+                        </span>
+
+                        <span th:if="${p.match.homeScore == null}"
+                              class="text-muted">
+                            -
+                        </span>
+
+                    </td>
+
+                    <!-- PUNKTY -->
+                    <td>
+
+                        <span th:if="${p.match.homeScore != null}"
+                              class="badge ms-2"
+                              th:classappend="${p.points == 3} ? 'bg-success' :
+                               (${p.points == 1} ? 'bg-warning text-dark' : 'bg-secondary')"
+                              th:text="${p.points} + ' pkt'">
+                        </span>
+
+                    </td>
+
+                </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

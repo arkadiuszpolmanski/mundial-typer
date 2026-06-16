@@ -14,4 +14,6 @@ public interface PredictionRepository extends JpaRepository<Prediction, Long> {
     List<Prediction> findByMatchId(Long matchId);
 
     Optional<Prediction> findByUserUsernameAndMatchId(String username, Long matchId);
+
+    List<Prediction> findByUserOrderByMatchMatchTime(User user);
 }

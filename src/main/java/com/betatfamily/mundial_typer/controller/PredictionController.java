@@ -9,7 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.security.PublicKey;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -102,5 +106,20 @@ public class PredictionController {
         userRepository.save(user);
 
         return "redirect:/home";
+    }
+
+    @GetMapping("/user-predictions")
+    public String userPredictions(@RequestParam(required = false) Long userId,
+                                  Model model) {
+
+            User user = userRepository.findById(userId).orElseThrow();
+
+            List<Prediction> predictions = predictionRepository.findByUserOrderByMatchMatchTime(user);
+
+            model.addAttribute("user", user);
+            model.addAttribute("predictions", predictions);
+
+
+        return "user-predictions";
     }
 }

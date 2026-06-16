@@ -149,7 +149,12 @@
 
             </td>
 
-            <td th:text="${u.firstName + ' ' + u.lastName}"></td>
+            <td>
+                <a th:href="@{/user-predictions(userId=${u.id})}"
+                   class="text-decoration-none text-white fw-semibold"
+                   th:text="${u.firstName + ' ' + u.lastName}">
+                </a>
+            </td>
 
             <td class="fw-bold text-primary"
                 th:text="${u.totalPoints}">
