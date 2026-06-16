@@ -112,11 +112,11 @@ public class PredictionController {
     public String userPredictions(@RequestParam(required = false) Long userId,
                                   Model model) {
 
-            User user = userRepository.findById(userId).orElseThrow();
+            User selectedUser = userRepository.findById(userId).orElseThrow();
 
-            List<Prediction> predictions = predictionRepository.findByUserOrderByMatchMatchTime(user);
+            List<Prediction> predictions = predictionRepository.findByUserOrderByMatchMatchTime(selectedUser);
 
-            model.addAttribute("user", user);
+            model.addAttribute("selectedUser", selectedUser);
             model.addAttribute("predictions", predictions);
 
 
