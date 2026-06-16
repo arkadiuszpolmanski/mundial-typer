@@ -110,14 +110,18 @@ public class PredictionController {
 
     @GetMapping("/user-predictions")
     public String userPredictions(@RequestParam(required = false) Long userId,
-                                  Model model) {
+                                  Model model,
+                                  Authentication auth) {
 
-            User selectedUser = userRepository.findById(userId).orElseThrow();
+        User selectedUser = userRepository.findById(userId).orElseThrow();
 
-            List<Prediction> predictions = predictionRepository.findByUserOrderByMatchMatchTime(selectedUser);
+        List<Prediction> predictions = predictionRepository.findByUserOrderByMatchMatchTime(selectedUser);
 
-            model.addAttribute("selectedUser", selectedUser);
-            model.addAttribute("predictions", predictions);
+        User user = userRepository.findByUsername(auth.getName());
+
+        model.addAttribute("user", user);
+        model.addAttribute("selectedUser", selectedUser);
+        model.addAttribute("predictions", predictions);
 
 
         return "user-predictions";
