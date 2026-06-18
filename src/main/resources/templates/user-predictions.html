@@ -50,7 +50,13 @@
 
                     <!-- DATA -->
                     <td>
-                        <span th:text="${#temporals.format(p.match.matchTime, 'dd.MM HH:mm')}"></span>
+                        <span class="d-none d-md-inline"
+                              th:text="${#temporals.format(p.match.matchTime, 'dd.MM HH:mm')}">
+                        </span>
+
+                        <span class="d-inline d-md-none"
+                              th:text="${#temporals.format(p.match.matchTime, 'dd.MM')}">
+                        </span>
                     </td>
 
                     <!-- MECZ -->
