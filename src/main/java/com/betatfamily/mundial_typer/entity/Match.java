@@ -1,9 +1,6 @@
 package com.betatfamily.mundial_typer.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,4 +25,7 @@ public class Match {
 
     private Integer homeScore;
     private Integer awayScore;
+
+    @Enumerated(EnumType.STRING)
+    private MatchRound round;
 }

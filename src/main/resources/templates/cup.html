@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Puchar Typerów</title>
+
+    <link rel="icon"
+          type="image/png"
+          href="/images/puchar.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=0.61">
+</head>
+
+
+<body>
+
+<!-- NAVBAR -->
+
+<div th:replace="~{fragments/navbar :: navbar}">
+</div>
+
+<div class="container mt-4">
+
+    <!-- HEADER -->
+
+    <!-- CUP TABS -->
+
+    <ul class="nav nav-tabs mb-4" id="cupTabs" role="tablist">
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active"
+                    id="ranking-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#ranking"
+                    type="button">
+                🏆 Rozstawienie
+            </button>
+        </li>
+
+
+        <li class="nav-item" role="presentation">
+            <button class="nav-link"
+                    th:if="${bracketVisible}"
+                    id="bracket-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#bracket"
+                    type="button">
+                ⚔️ Drabinka
+            </button>
+        </li>
+
+    </ul>
+
+
+    <div class="tab-content">
+
+
+        <!-- TAB RANKING -->
+
+        <div class="tab-pane fade show active"
+             id="ranking">
+
+
+            <div class="card shadow-sm p-4 mb-4 text-center">
+
+                <h2 class="mb-2">
+                    🏆 Puchar Typerów
+                </h2>
+
+                <p class="text-muted mb-0">
+                    Ranking kwalifikacyjny
+                    na podstawie 3 kolejki fazy grupowej
+                </p>
+
+            </div>
+
+
+            <!-- QUALIFICATION TABLE -->
+            <div class="card shadow-sm p-4">
+
+                <h4 class="text-center mb-4">
+                    🔥 Rozstawienie pucharowe
+                </h4>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle text-center">
+
+                        <thead>
+                        <tr>
+                            <th>Miejsce</th>
+                            <th>Gracz</th>
+                            <th>Punkty</th>
+                            <th>3 pkt</th>
+                            <th>1 pkt</th>
+                            <th>Liga</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr th:each="u, stat : ${ranking}">
+
+                            <!-- PLACE -->
+                            <td>
+                        <span class="badge bg-success"
+                              th:text="${stat.index + 1}">
+                        </span>
+                            </td>
+
+
+                            <!-- USER -->
+                            <td class="fw-bold">
+                        <span th:text="${u.user.firstName
+                                      + ' '
+                                      + u.user.lastName}">
+                        </span>
+                            </td>
+
+
+                            <!-- POINTS -->
+                            <td>
+                        <span class="badge bg-primary"
+                              th:text="${u.points + ' pkt'}">
+                        </span>
+                            </td>
+
+                            <td th:text="${u.correct3}"></td>
+                            <td th:text="${u.correct1}"></td>
+
+
+                            <!-- LEAGUE POSITION -->
+                            <td>
+                        <span th:if="${u.leaguePosition != null}"
+                              th:text="${u.leaguePosition}">
+                        </span>
+
+                                <span th:if="${u.leaguePosition == null}"
+                                      class="text-muted">
+                            -
+                        </span>
+
+                            </td>
+
+                        </tr>
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+            <!-- INFO -->
+            <div class="card shadow-sm p-3 mt-4 text-center">
+
+                <div class="text-muted">
+                    Do fazy pucharowej awansuje najlepsza szesnastka.
+
+                    <br>
+
+                    W przypadku remisu decyduje ranking ligowy.
+
+                    <br>
+
+                    Jeśli ranking ligowy również jest remisowy to o miejscu zdecyduje losowanie.
+
+                </div>
+
+            </div>
+            <br>
+
+        </div>
+
+        <div class="tab-pane fade"
+             id="bracket">
+
+            <div id="cupBracket"
+                 class="carousel slide"
+                 data-bs-ride="false">
+
+                <div class="carousel-inner">
+
+                    <!-- 1/8 finału -->
+                    <div class="carousel-item active">
+
+                        <div class="bracket-single-round">
+
+                            <h4 class="text-center mb-4">
+                                1/8 finału
+                            </h4>
+
+                            <div class="round-matches">
+
+                                <a th:each="m : ${matches}"
+                                   th:if="${m.stage.name() == 'OF_16'}"
+                                   th:href="@{'/cup/match/' + ${m.id}}"
+                                   class="match-box">
+
+                                    <div class="player-row">
+                                        <div class="player-name">
+                                    <span class="text-muted"
+                                          th:text="'(' + ${m.player1Seed.seed} + ') '">
+                                    </span>
+
+                                            <span th:text="${m.player1.firstName + ' ' + m.player1.lastName}">
+                                    </span>
+                                        </div>
+
+                                        <strong class="score"
+                                                th:text="${m.player1Points != null ? m.player1Points : 0}">
+                                        </strong>
+                                    </div>
+
+                                    <div class="player-row">
+                                        <div class="player-name">
+                                    <span class="text-muted"
+                                          th:text="'(' + ${m.player2Seed.seed} + ') '">
+                                    </span>
+
+                                            <span th:text="${m.player2.firstName + ' ' + m.player2.lastName}">
+                                    </span>
+                                        </div>
+
+                                        <strong class="score"
+                                                th:text="${m.player2Points != null ? m.player2Points : 0}">
+                                        </strong>
+                                    </div>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Ćwierćfinał -->
+                    <div class="carousel-item">
+
+                        <div class="bracket-single-round">
+
+                            <h4 class="text-center mb-4">
+                                Ćwierćfinał
+                            </h4>
+
+                            <div class="round-matches">
+
+                                <div class="match-box">
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 1</span>
+                                        <strong>0</strong>
+                                    </div>
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 2</span>
+                                        <strong>0</strong>
+                                    </div>
+                                </div>
+
+                                <div class="match-box">
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 3</span>
+                                        <strong>0</strong>
+                                    </div>
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 4</span>
+                                        <strong>0</strong>
+                                    </div>
+                                </div>
+
+                                <div class="match-box">
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 5</span>
+                                        <strong>0</strong>
+                                    </div>
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 6</span>
+                                        <strong>0</strong>
+                                    </div>
+                                </div>
+
+                                <div class="match-box">
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 7</span>
+                                        <strong>0</strong>
+                                    </div>
+                                    <div class="player-row">
+                                        <span>Zwycięzca meczu 8</span>
+                                        <strong>0</strong>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Półfinał -->
+                    <div class="carousel-item">
+
+                        <div class="bracket-single-round">
+
+                            <h4 class="text-center mb-4">
+                                Półfinał
+                            </h4>
+
+                            <div class="round-matches">
+
+                                <div class="match-box">
+                                    <div class="player-row">
+                                        <span>Zwycięzca QF1</span>
+                                        <strong>0</strong>
+                                    </div>
+
+                                    <div class="player-row">
+                                        <span>Zwycięzca QF2</span>
+                                        <strong>0</strong>
+                                    </div>
+                                </div>
+
+                                <div class="match-box">
+                                    <div class="player-row">
+                                        <span>Zwycięzca QF3</span>
+                                        <strong>0</strong>
+                                    </div>
+
+                                    <div class="player-row">
+                                        <span>Zwycięzca QF4</span>
+                                        <strong>0</strong>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <!-- Finał -->
+                    <div class="carousel-item">
+
+                        <div class="bracket-single-round">
+
+                            <h4 class="text-center mb-4">
+                                Finał
+                            </h4>
+
+                            <div class="round-matches">
+
+                                <div class="match-box">
+
+                                    <div class="player-row">
+                                        <span>Zwycięzca SF1</span>
+                                        <strong>0</strong>
+                                    </div>
+
+                                    <div class="player-row">
+                                        <span>Zwycięzca SF2</span>
+                                        <strong>0</strong>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <button class="carousel-control-prev"
+                        type="button"
+                        data-bs-target="#cupBracket"
+                        data-bs-slide="prev">
+
+                    <span class="carousel-control-prev-icon"></span>
+
+                </button>
+
+                <button class="carousel-control-next"
+                        type="button"
+                        data-bs-target="#cupBracket"
+                        data-bs-slide="next">
+
+                    <span class="carousel-control-next-icon"></span>
+
+                </button>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+</div>
+
+<script defer
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+
+</html>

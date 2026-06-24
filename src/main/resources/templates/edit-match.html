@@ -123,6 +123,24 @@
 
             </div>
 
+            <!-- ROUND -->
+            <div>
+
+                <label class="form-label">Runda</label>
+
+                <select class="form-select"
+                        name="round">
+
+                    <option th:each="r : ${rounds}"
+                            th:value="${r}"
+                            th:text="${r.label}"
+                            th:selected="${r == match.round}">
+                    </option>
+
+                </select>
+
+            </div>
+
             <!-- BUTTON -->
             <div class="d-flex justify-content-center gap-2">
 

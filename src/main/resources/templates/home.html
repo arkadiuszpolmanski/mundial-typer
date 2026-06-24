@@ -102,6 +102,21 @@
 
     </div>
 
+    <!-- CUP -->
+    <div th:if="${cupVisible}"
+         class="row justify-content-center mb-4">
+        <div class="col-12 col-md-6">
+            <a href="/cup"
+               class="text-decoration-none text-dark">
+                <div class="card shadow-sm p-4 text-center match-clickable h-100">
+                    <h6 class="mb-0 fw-bold fs-4">
+                        🏆 Puchar Typerów
+                    </h6>
+                </div>
+            </a>
+        </div>
+    </div>
+
     <!-- WORLD CUP PICK -->
     <div class="row justify-content-center mb-4">
 
@@ -197,12 +212,20 @@
 
         <div class="col-12 col-md-8 mx-auto"
              th:each="match, iterStat : ${matches}"
-             th:if="${iterStat.index < 4}">
+             th:if="${iterStat.index < 6}">
 
             <a th:href="@{'/match/' + ${match.id}}"
                class="text-decoration-none text-dark">
 
                 <div class="card h-100 text-center p-3 shadow-sm match-clickable">
+
+                    <!-- ROUND -->
+                    <div class="text-center mb-2">
+                    <span th:if="${match.round != null}"
+                          class="badge bg-priamry px-3 py-2"
+                          th:text="${match.round.label}">
+                    </span>
+                    </div>
 
                     <!-- MATCH STATUS -->
                     <div class="mb-2">

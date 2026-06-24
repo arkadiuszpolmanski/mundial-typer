@@ -41,7 +41,7 @@ public class HomeController {
         LocalDateTime now = LocalDateTime.now();
         LocalDateTime cutoff = now.minusHours(3);
 
-        List<Match> upcomingMatches = matchRepository.findTop4ByMatchTimeAfterOrderByMatchTimeAsc(cutoff);
+        List<Match> upcomingMatches = matchRepository.findTop6ByMatchTimeAfterOrderByMatchTimeAsc(cutoff);
 
         Map<Long, Prediction> userPredictions = new HashMap<>();
         if (auth != null) {
@@ -74,6 +74,7 @@ public class HomeController {
         model.addAttribute("matches", upcomingMatches);
         model.addAttribute("userPredictions", userPredictions);
         model.addAttribute("config", config);
+        model.addAttribute("cupVisible", config.getCupVisible());
 
         return "home";
     }

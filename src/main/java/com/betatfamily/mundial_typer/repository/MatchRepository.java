@@ -11,4 +11,5 @@ public interface MatchRepository extends JpaRepository<Match, Long> {
     List<Match> findAllByOrderByMatchTimeAsc();
     List<Match> findAllByMatchTimeBetweenOrderByMatchTimeAsc(LocalDateTime now, LocalDateTime in24h);
     List<Match> findTop4ByMatchTimeAfterOrderByMatchTimeAsc(LocalDateTime now);
+    List<Match> findTop6ByMatchTimeAfterOrderByMatchTimeAsc(LocalDateTime now);
 }

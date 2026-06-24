@@ -1,7 +1,6 @@
 package com.betatfamily.mundial_typer.service;
 
 import com.betatfamily.mundial_typer.dto.UserRankingDto;
-import com.betatfamily.mundial_typer.entity.Match;
 import com.betatfamily.mundial_typer.entity.Prediction;
 import com.betatfamily.mundial_typer.entity.TournamentConfig;
 import com.betatfamily.mundial_typer.entity.User;
@@ -24,32 +23,35 @@ public class RankingService {
     @Autowired
     private ConfigRepository configRepository;
 
-    public int calculateMatchPoints(Prediction p) {
+    @Autowired
+    private PointsService pointsService;
 
-        Match m = p.getMatch();
-
-        if (m.getHomeScore() == null || m.getAwayScore() == null) {
-            return 0; // mecz jeszcze nie rozegrany
-        }
-
-        int realHome = m.getHomeScore();
-        int realAway = m.getAwayScore();
-
-        int predHome = p.getPredictedHome();
-        int predAway = p.getPredictedAway();
-
-        // dokładny wynik
-        if (realHome == predHome && realAway == predAway) {
-            return 3;
-        }
-
-        // poprawny typ
-        if (Integer.compare(realHome, realAway) == Integer.compare(predHome, predAway)) {
-            return 1;
-        }
-
-        return 0;
-    }
+//    public int calculateMatchPoints(Prediction p) {
+//
+//        Match m = p.getMatch();
+//
+//        if (m.getHomeScore() == null || m.getAwayScore() == null) {
+//            return 0; // mecz jeszcze nie rozegrany
+//        }
+//
+//        int realHome = m.getHomeScore();
+//        int realAway = m.getAwayScore();
+//
+//        int predHome = p.getPredictedHome();
+//        int predAway = p.getPredictedAway();
+//
+//        // dokładny wynik
+//        if (realHome == predHome && realAway == predAway) {
+//            return 3;
+//        }
+//
+//        // poprawny typ
+//        if (Integer.compare(realHome, realAway) == Integer.compare(predHome, predAway)) {
+//            return 1;
+//        }
+//
+//        return 0;
+//    }
 
     public List<UserRankingDto> buildRanking(List<User> users,
                                              List<Prediction> predictions) {
@@ -81,7 +83,7 @@ public class RankingService {
 
             UserRankingDto dto = map.get(p.getUser().getUsername());
 
-            int pts = calculateMatchPoints(p);
+            int pts = pointsService.calculateMatchPoints(p);
 
             dto.setTotalPoints(dto.getTotalPoints() + pts);
 
@@ -122,9 +124,9 @@ public class RankingService {
 
     public int calculateTotalPoints(User user) {
 
-        int matchPoints = predictionRepository.findByUserUsername(user)
+        int matchPoints = predictionRepository.findByUser(user)
                 .stream()
-                .mapToInt(this::calculateMatchPoints)
+                .mapToInt(pointsService::calculateMatchPoints)
                 .sum();
 
         int worldCupWinnerPoints = calculateWorldCupPoints(user, configRepository.findById(1L).orElse(null));

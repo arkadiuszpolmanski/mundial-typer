@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+    <title>Mecz Pucharowy</title>
+
+    <link rel="icon"
+          type="image/png"
+          href="/images/puchar.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          th:href="@{/css/style.css}">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=0.61">
+
+
+    <style>
+
+        .match-container {
+
+            max-width: 900px;
+            margin: 0 auto;
+
+        }
+
+
+        .match-card {
+
+            border-radius: 16px;
+            padding: 25px;
+
+        }
+
+
+        .match-header-row {
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 15px;
+
+        }
+
+
+        .player-side {
+
+            flex: 1;
+
+            min-width: 0;
+
+            text-align: center;
+
+        }
+
+
+        .player-name {
+
+            font-size: 18px;
+
+            font-weight: 700;
+
+            white-space: nowrap;
+
+            overflow: hidden;
+
+            text-overflow: ellipsis;
+
+        }
+
+
+        .seed {
+
+            color: rgba(234,255,243,.65);
+
+            font-weight: 600;
+
+        }
+
+
+        .score-center {
+
+            flex: 0 0 120px;
+
+            text-align: center;
+
+        }
+
+
+        .score {
+
+            font-size: 32px;
+
+            font-weight: 800;
+
+            color:#00e676;
+
+        }
+
+
+        .vs {
+
+            font-size: 24px;
+
+            font-weight: 800;
+
+            color:#aaa;
+
+        }
+
+
+        .winner {
+
+            margin-top:10px;
+
+        }
+
+
+        @media(max-width:600px){
+
+
+            .player-name {
+
+                font-size:14px;
+
+            }
+
+
+            .score-center {
+
+                flex-basis:80px;
+
+            }
+
+
+            .score {
+
+                font-size:24px;
+
+            }
+
+        }
+
+
+    </style>
+
+
+</head>
+
+
+<body>
+
+
+<div th:replace="~{fragments/navbar :: navbar}">
+</div>
+
+
+
+<div class="container mt-4 match-container">
+
+
+    <h3 class="text-center mb-4">
+        Szczegóły pojedynku
+    </h3>
+
+
+
+    <!-- MATCH CARD -->
+
+    <div class="card shadow-sm match-card mb-4">
+
+
+        <div class="match-header-row">
+
+
+            <!-- PLAYER 1 -->
+
+            <div class="player-side">
+
+
+                <div class="player-name">
+
+
+                    <span th:if="${match.player1Seed != null}"
+                          class="seed"
+                          th:text="'(' + ${match.player1Seed.seed} + ') '">
+                    </span>
+
+
+                    <span th:text="${match.player1.firstName
+                                   + ' '
+                                   + match.player1.lastName}">
+                    </span>
+
+
+                </div>
+
+
+
+                <div th:if="${match.winner != null
+                             and match.winner.id == match.player1.id}"
+                     class="badge bg-success winner">
+
+                    Zwycięzca
+
+                </div>
+
+
+            </div>
+
+
+
+
+            <!-- SCORE -->
+
+
+            <div class="score-center">
+
+
+                <div th:if="${match.player1Points != null}"
+                     class="score">
+
+
+                    <span th:text="${match.player1Points}">
+                    </span>
+
+                    -
+
+                    <span th:text="${match.player2Points}">
+                    </span>
+
+
+                </div>
+
+
+                <div th:if="${match.player1Points == null}"
+                     class="vs">
+
+                    VS
+
+                </div>
+
+
+                <div class="text-muted mt-2">
+
+                    <span th:text="${match.stage.label}">
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+            <!-- PLAYER 2 -->
+
+
+            <div class="player-side">
+
+
+                <div class="player-name">
+
+
+                    <span th:if="${match.player2Seed != null}"
+                          class="seed"
+                          th:text="'(' + ${match.player2Seed.seed} + ') '">
+                    </span>
+
+
+                    <span th:text="${match.player2.firstName
+                                   + ' '
+                                   + match.player2.lastName}">
+                    </span>
+
+
+                </div>
+
+
+
+                <div th:if="${match.winner != null
+                             and match.winner.id == match.player2.id}"
+                     class="badge bg-success winner">
+
+                    Zwycięzca
+
+                </div>
+
+
+            </div>
+
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <!-- DETAILS -->
+
+
+    <div class="card shadow-sm p-3 mb-4">
+
+
+        <h5 class="text-center mb-3">
+            Informacje
+        </h5>
+
+
+        <div class="text-center">
+
+
+            <p>
+
+                Runda:
+
+                <strong th:text="${match.stage.label}">
+                </strong>
+
+            </p>
+
+
+
+            <p>
+
+                Pozycja drabinki:
+
+                <strong th:text="${match.bracketPosition}">
+                </strong>
+
+            </p>
+
+
+        </div>
+
+
+    </div>
+
+
+
+
+    <div class="text-center mb-4">
+
+
+        <a href="/cup"
+           class="btn btn-outline-secondary">
+
+            ← Powrót do pucharu
+
+        </a>
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+<script defer
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>

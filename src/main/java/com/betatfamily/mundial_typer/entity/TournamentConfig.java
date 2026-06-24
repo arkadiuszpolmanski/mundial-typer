@@ -19,4 +19,7 @@ public class TournamentConfig {
     private Country worldCupWinner;
 
     private LocalDateTime worldCupDeadline;
+
+    private Boolean cupVisible = false;
+    private Boolean bracketVisible = false;
 }

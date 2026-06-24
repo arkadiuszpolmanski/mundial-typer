@@ -44,6 +44,16 @@
                    type="datetime-local"
                    name="matchTime">
 
+            <select class="form-select w-auto"
+                    name="round">
+
+                <option th:each="r : ${rounds}"
+                        th:value="${r}"
+                        th:text="${r.label}">
+                </option>
+
+            </select>
+
             <button class="btn btn-success">
                 Dodaj
             </button>
@@ -87,6 +97,14 @@
         <div class="col-12" th:each="match : ${matches}">
 
             <div class="card shadow-sm p-3">
+
+                <!-- ROUND -->
+                <div class="text-center mb-2">
+                    <span th:if="${match.round != null}"
+                          class="badge bg-priamry px-3 py-2"
+                          th:text="${match.round.label}">
+                    </span>
+                </div>
 
                 <div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">
 

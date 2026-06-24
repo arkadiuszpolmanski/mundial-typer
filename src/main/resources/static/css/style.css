@@ -289,3 +289,313 @@ td.silver {
 td.bronze {
     background: linear-gradient(90deg, rgba(205,127,50,0.15), rgba(205,127,50,0.05)) !important;
 }
+
+/* =========================
+   CUP BRACKET - STADION STYLE
+   ========================= */
+
+
+/* każdy mecz */
+.match-box {
+
+    position:relative;
+    overflow:hidden;
+
+    display:block;
+
+    background:rgba(255,255,255,0.08);
+
+    color:#eafff3;
+
+    border:1px solid rgba(255,255,255,.15);
+
+    border-radius:18px;
+
+    padding:14px 16px;
+
+    text-decoration:none;
+
+    backdrop-filter:blur(12px);
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,.25),
+        0 0 15px rgba(0,255,120,.10);
+
+    transition:.2s;
+
+}
+
+
+.match-box::before {
+
+    content:"";
+
+    position:absolute;
+
+    inset:0;
+
+    border-radius:18px;
+
+    background:
+        radial-gradient(
+            circle at top left,
+            rgba(0,255,140,.10),
+            transparent 60%
+        );
+
+    pointer-events:none;
+
+}
+
+
+.match-box:hover {
+
+    transform:translateY(-4px);
+
+    box-shadow:
+        0 0 18px rgba(0,255,120,.25),
+        0 0 40px rgba(0,255,120,.12);
+
+}
+
+
+.match-box span,
+.match-box strong {
+
+    color:#eafff3 !important;
+
+}
+
+
+/* zawodnik + wynik */
+
+.match-box .player-row {
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
+
+.match-box .player-name {
+
+    font-weight:700;
+    white-space:nowrap;
+    overflow:visible;
+    text-overflow:unset;
+    max-width:none;
+    flex:1;
+}
+
+
+.match-box .score {
+
+    min-width:25px;
+
+    text-align:right;
+
+    font-size:18px;
+
+    font-weight:800;
+
+    color:#00e676 !important;
+
+}
+
+
+
+/* =========================
+   BRACKET LAYOUT
+   ========================= */
+
+.bracket {
+
+    display:flex;
+
+    gap:25px;
+
+    overflow-x:auto;
+
+    align-items:flex-start;
+
+    padding:20px;
+
+}
+
+
+/* kolumna rundy */
+
+.round {
+
+    width:240px;
+
+    min-width:240px;
+
+    display:flex;
+
+    flex-direction:column;
+
+}
+
+
+/* nagłówek rundy */
+
+.round-title {
+
+    height:35px;
+
+    margin-bottom:20px;
+
+    text-align:center;
+
+    font-weight:700;
+
+}
+
+
+/* mecze */
+
+.round-matches {
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:20px;
+
+}
+
+
+
+/* wszystkie rundy równo od góry */
+
+.round-of16,
+.round-quarter,
+.round-semi,
+.round-final {
+
+    padding-top:0;
+
+}
+
+
+
+/* kafelek meczu */
+
+.match-box {
+
+    margin-bottom:0;
+
+}
+
+
+/* =========================
+   CUP TABS - STADIUM STYLE
+   ========================= */
+
+.nav-tabs {
+    border-bottom: 1px solid rgba(255,255,255,.15);
+    gap: 10px;
+}
+
+
+.nav-tabs .nav-link {
+
+    color: rgba(234,255,243,.75);
+
+    background: rgba(255,255,255,.08);
+
+    border: 1px solid rgba(255,255,255,.12);
+
+    border-radius: 14px 14px 0 0;
+
+    padding: 12px 24px;
+
+    font-weight:700;
+
+    backdrop-filter: blur(12px);
+
+    transition:.2s;
+}
+
+
+.nav-tabs .nav-link:hover {
+
+    color:#eafff3;
+
+    background:rgba(0,168,89,.18);
+
+    border-color:rgba(0,255,120,.25);
+
+}
+
+
+.nav-tabs .nav-link.active {
+
+    color:#eafff3;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,168,89,.45),
+            rgba(0,200,83,.25)
+        );
+
+    border-color:rgba(0,255,120,.35);
+
+    box-shadow:
+        0 0 18px rgba(0,255,120,.18);
+
+}
+
+
+.tab-content {
+
+    margin-top:10px;
+
+}
+
+.cup-carousel {
+
+    background:rgba(255,255,255,.08);
+    border-radius:18px;
+    padding:30px;
+
+}
+
+
+.carousel-control-prev,
+.carousel-control-next {
+
+    width:60px;
+
+}
+
+
+.carousel-item {
+
+    min-height:500px;
+
+}
+
+
+.bracket-single-round {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.round-matches {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.round-matches .match-box {
+    width: 100%;
+}

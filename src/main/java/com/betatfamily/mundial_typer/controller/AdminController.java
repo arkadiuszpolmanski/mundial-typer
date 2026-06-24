@@ -2,6 +2,7 @@ package com.betatfamily.mundial_typer.controller;
 
 import com.betatfamily.mundial_typer.entity.*;
 import com.betatfamily.mundial_typer.repository.*;
+import com.betatfamily.mundial_typer.service.CupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
@@ -33,6 +34,12 @@ public class AdminController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private CupService cupService;
+
+    @Autowired
+    private CupSeedRepository cupSeedRepository;
 
     @GetMapping("/admin/world-cup-winner")
     public String worldCupWinnerPage(Model model, Authentication auth) {
@@ -125,6 +132,7 @@ public class AdminController {
         model.addAttribute("countries", countryRepository.findAll());
         model.addAttribute("matches", filteredMatches);
         model.addAttribute("type", type);
+        model.addAttribute("rounds", MatchRound.values());
 
         return "admin-matches";
     }
@@ -179,7 +187,8 @@ public class AdminController {
     public String addMatch(@RequestParam Long homeTeamId,
                            @RequestParam Long awayTeamId,
                            @DateTimeFormat(pattern = "yyy-MM-dd'T'HH:mm")
-                           LocalDateTime matchTime) {
+                           LocalDateTime matchTime,
+                           MatchRound round) {
 
         Country homeTeam = countryRepository.findById(homeTeamId).orElseThrow();
         Country awayTeam = countryRepository.findById(awayTeamId).orElseThrow();
@@ -188,6 +197,7 @@ public class AdminController {
         match.setHomeTeam(homeTeam);
         match.setAwayTeam(awayTeam);
         match.setMatchTime(matchTime);
+        match.setRound(round);
 
         matchRepository.save(match);
 
@@ -214,6 +224,7 @@ public class AdminController {
         model.addAttribute("user", user);
         model.addAttribute("match", match);
         model.addAttribute("countries", countryRepository.findAll());
+        model.addAttribute("rounds", MatchRound.values());
 
         return "edit-match";
     }
@@ -223,7 +234,8 @@ public class AdminController {
                            @RequestParam Long homeTeamId,
                            @RequestParam Long awayTeamId,
                            @DateTimeFormat(pattern = "yyy-MM-dd'T'HH:mm")
-                           LocalDateTime matchTime) {
+                           LocalDateTime matchTime,
+                           MatchRound round) {
 
         Country homeTeam = countryRepository.findById(homeTeamId).orElseThrow();
         Country awayTeam = countryRepository.findById(awayTeamId).orElseThrow();
@@ -233,6 +245,7 @@ public class AdminController {
         match.setHomeTeam(homeTeam);
         match.setAwayTeam(awayTeam);
         match.setMatchTime(matchTime);
+        match.setRound(round);
 
         matchRepository.save(match);
 
@@ -271,5 +284,58 @@ public class AdminController {
 
     private boolean isAdmin(Authentication auth) {
         return auth != null && auth.getName().equals("Arek");
+    }
+
+    @GetMapping("/admin/cup")
+    public String cupAdmin(Model model,
+                           Authentication auth) {
+
+        TournamentConfig config = configRepository.findById(1L).orElseThrow();
+
+        User user = userRepository.findByUsername(auth.getName());
+        model.addAttribute("user", user);
+        model.addAttribute("cupVisible", config.getCupVisible());
+        model.addAttribute("bracketVisible", config.getBracketVisible());
+        model.addAttribute("seeds", cupSeedRepository.findAllByOrderBySeedAsc());
+
+        return "admin-cup";
+    }
+
+    @PostMapping("/admin/cup/toggle")
+    public String toggleCup() {
+
+        TournamentConfig config = configRepository.findById(1L).orElseThrow();
+        config.setCupVisible(!Boolean.TRUE.equals(config.getCupVisible()));
+
+        configRepository.save(config);
+
+        return "redirect:/admin/cup";
+    }
+
+    @PostMapping("/admin/cup/generate-seeds")
+    public String generateCupSeeds() {
+
+        cupService.generateSeeds();
+
+        return "redirect:/admin/cup";
+    }
+
+    @PostMapping("/admin/cup/generate-bracket")
+    public String generateBracket() {
+
+        cupService.generateBracket();
+
+        return "redirect:/admin/cup";
+    }
+
+    @PostMapping("/admin/cup/toggle-bracket")
+    public String toggleBracket() {
+
+        TournamentConfig config = configRepository.findById(1L).orElseThrow();
+
+        config.setBracketVisible(!config.getBracketVisible());
+        configRepository.save(config);
+
+        return "redirect:/admin/cup";
     }
 }
