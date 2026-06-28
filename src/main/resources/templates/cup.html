@@ -35,7 +35,8 @@
     <ul class="nav nav-tabs mb-4" id="cupTabs" role="tablist">
 
         <li class="nav-item" role="presentation">
-            <button class="nav-link active"
+            <button class="nav-link"
+                    th:classappend="${!bracketActive} ? ' active'"
                     id="ranking-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#ranking"
@@ -48,6 +49,7 @@
         <li class="nav-item" role="presentation">
             <button class="nav-link"
                     th:if="${bracketVisible}"
+                    th:classappend="${bracketActive} ? ' active'"
                     id="bracket-tab"
                     data-bs-toggle="tab"
                     data-bs-target="#bracket"
@@ -64,8 +66,9 @@
 
         <!-- TAB RANKING -->
 
-        <div class="tab-pane fade show active"
-             id="ranking">
+        <div class="tab-pane fade"
+             id="ranking"
+             th:classappend="${!bracketActive} ? ' show active'">
 
 
             <div class="card shadow-sm p-4 mb-4 text-center">
@@ -166,11 +169,15 @@
 
                     <br>
 
-                    W przypadku remisu decyduje ranking ligowy.
+                    W przypadku identycznej liczby punktów o miejscu w rozstawieniu decyduje kolejno:
+                    <br>
+                    - liczba trafionych czysto wyników w 3 kolejce fazy grupowej
+                    <br>
+                    - pozycja w rankingu głównym na moment zakończenia 3 kolejki fazy grupowej
 
                     <br>
 
-                    Jeśli ranking ligowy również jest remisowy to o miejscu zdecyduje losowanie.
+                    Jeśli ranking główny również jest remisowy to o miejscu zdecyduje losowanie.
 
                 </div>
 
@@ -180,7 +187,8 @@
         </div>
 
         <div class="tab-pane fade"
-             id="bracket">
+             id="bracket"
+             th:classappend="${bracketActive} ? ' show active'">
 
             <div id="cupBracket"
                  class="carousel slide"
@@ -188,8 +196,11 @@
 
                 <div class="carousel-inner">
 
+
                     <!-- 1/8 finału -->
-                    <div class="carousel-item active">
+                    <div class="carousel-item"
+                         th:if="${!#lists.isEmpty(matches)}"
+                         th:classappend="${activeStage == T(com.betatfamily.mundial_typer.entity.CupStage).OF_16} ? ' active'">
 
                         <div class="bracket-single-round">
 
@@ -197,44 +208,75 @@
                                 1/8 finału
                             </h4>
 
+
                             <div class="round-matches">
 
-                                <a th:each="m : ${matches}"
-                                   th:if="${m.stage.name() == 'OF_16'}"
-                                   th:href="@{'/cup/match/' + ${m.id}}"
+
+                                <a th:each="dto : ${matches}"
+                                   th:if="${dto.match.stage == T(com.betatfamily.mundial_typer.entity.CupStage).OF_16}"
+                                   th:href="@{'/cup/match/' + ${dto.match.id}}"
                                    class="match-box">
 
-                                    <div class="player-row">
-                                        <div class="player-name">
-                                    <span class="text-muted"
-                                          th:text="'(' + ${m.player1Seed.seed} + ') '">
-                                    </span>
 
-                                            <span th:text="${m.player1.firstName + ' ' + m.player1.lastName}">
-                                    </span>
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id} ? 'winner' : ''">
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player1Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:text="${dto.match.player1.firstName + ' ' + dto.match.player1.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id}">
+                                                ⭐
+                                            </span>
+
                                         </div>
 
+
                                         <strong class="score"
-                                                th:text="${m.player1Points != null ? m.player1Points : 0}">
+                                                th:text="${dto.player1Points != null ? dto.player1Points : 0}">
                                         </strong>
+
                                     </div>
 
-                                    <div class="player-row">
-                                        <div class="player-name">
-                                    <span class="text-muted"
-                                          th:text="'(' + ${m.player2Seed.seed} + ') '">
-                                    </span>
 
-                                            <span th:text="${m.player2.firstName + ' ' + m.player2.lastName}">
-                                    </span>
+
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id} ? 'winner' : ''">
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player2Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:text="${dto.match.player2.firstName + ' ' + dto.match.player2.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id}">
+                                                ⭐
+                                            </span>
+
                                         </div>
 
+
                                         <strong class="score"
-                                                th:text="${m.player2Points != null ? m.player2Points : 0}">
+                                                th:text="${dto.player2Points != null ? dto.player2Points : 0}">
                                         </strong>
+
                                     </div>
+
 
                                 </a>
+
 
                             </div>
 
@@ -242,8 +284,13 @@
 
                     </div>
 
+
+
                     <!-- Ćwierćfinał -->
-                    <div class="carousel-item">
+                    <div class="carousel-item"
+                         th:if="${!#lists.isEmpty(quarterFinals)}"
+                         th:classappend="${activeStage == T(com.betatfamily.mundial_typer.entity.CupStage).QUARTER_FINAL} ? ' active'">
+
 
                         <div class="bracket-single-round">
 
@@ -251,51 +298,88 @@
                                 Ćwierćfinał
                             </h4>
 
+
                             <div class="round-matches">
 
-                                <div class="match-box">
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 1</span>
-                                        <strong>0</strong>
-                                    </div>
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 2</span>
-                                        <strong>0</strong>
-                                    </div>
-                                </div>
 
-                                <div class="match-box">
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 3</span>
-                                        <strong>0</strong>
-                                    </div>
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 4</span>
-                                        <strong>0</strong>
-                                    </div>
-                                </div>
+                                <a th:each="dto : ${quarterFinals}"
+                                   th:href="@{'/cup/match/' + ${dto.match.id}}"
+                                   class="match-box">
 
-                                <div class="match-box">
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 5</span>
-                                        <strong>0</strong>
-                                    </div>
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 6</span>
-                                        <strong>0</strong>
-                                    </div>
-                                </div>
 
-                                <div class="match-box">
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 7</span>
-                                        <strong>0</strong>
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id} ? 'winner' : ''">
+
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player1Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:if="${dto.match.player1 != null}"
+                                                  th:text="${dto.match.player1.firstName + ' ' + dto.match.player1.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id}">
+                                                ⭐
+                                            </span>
+
+                                            <span th:if="${dto.match.player1 == null}">
+                                                Oczekiwanie
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong class="score"
+                                                th:text="${dto.player1Points != null ? dto.player1Points : 0}">
+                                        </strong>
+
+
                                     </div>
-                                    <div class="player-row">
-                                        <span>Zwycięzca meczu 8</span>
-                                        <strong>0</strong>
+
+
+
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id} ? 'winner' : ''">
+
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player2Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:if="${dto.match.player2 != null}"
+                                                  th:text="${dto.match.player2.firstName + ' ' + dto.match.player2.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id}">
+                                                ⭐
+                                            </span>
+
+                                            <span th:if="${dto.match.player2 == null}">
+                                                Oczekiwanie
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong class="score"
+                                                th:text="${dto.player2Points != null ? dto.player2Points : 0}">
+                                        </strong>
+
+
                                     </div>
-                                </div>
+
+
+                                </a>
+
 
                             </div>
 
@@ -303,79 +387,220 @@
 
                     </div>
 
+
+
+
+
                     <!-- Półfinał -->
-                    <div class="carousel-item">
+                    <div class="carousel-item"
+                         th:if="${!#lists.isEmpty(semiFinals)}"
+                         th:classappend="${activeStage == T(com.betatfamily.mundial_typer.entity.CupStage).SEMI_FINAL} ? ' active'">
+
 
                         <div class="bracket-single-round">
+
 
                             <h4 class="text-center mb-4">
                                 Półfinał
                             </h4>
 
+
                             <div class="round-matches">
 
-                                <div class="match-box">
-                                    <div class="player-row">
-                                        <span>Zwycięzca QF1</span>
-                                        <strong>0</strong>
+
+                                <a th:each="dto : ${semiFinals}"
+                                   th:href="@{'/cup/match/' + ${dto.match.id}}"
+                                   class="match-box">
+
+
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id} ? 'winner' : ''">
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player1Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:if="${dto.match.player1 != null}"
+                                                  th:text="${dto.match.player1.firstName + ' ' + dto.match.player1.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id}">
+                                                ⭐
+                                            </span>
+
+                                            <span th:if="${dto.match.player1 == null}">
+                                                Oczekiwanie
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong class="score"
+                                                th:text="${dto.player1Points != null ? dto.player1Points : 0}">
+                                        </strong>
+
                                     </div>
 
-                                    <div class="player-row">
-                                        <span>Zwycięzca QF2</span>
-                                        <strong>0</strong>
-                                    </div>
-                                </div>
 
-                                <div class="match-box">
-                                    <div class="player-row">
-                                        <span>Zwycięzca QF3</span>
-                                        <strong>0</strong>
+
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id} ? 'winner' : ''">
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player2Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:if="${dto.match.player2 != null}"
+                                                  th:text="${dto.match.player2.firstName + ' ' + dto.match.player2.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id}">
+                                                ⭐
+                                            </span>
+
+                                            <span th:if="${dto.match.player2 == null}">
+                                                Oczekiwanie
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong class="score"
+                                                th:text="${dto.player2Points != null ? dto.player2Points : 0}">
+                                        </strong>
+
                                     </div>
 
-                                    <div class="player-row">
-                                        <span>Zwycięzca QF4</span>
-                                        <strong>0</strong>
-                                    </div>
-                                </div>
+
+                                </a>
+
 
                             </div>
 
                         </div>
 
+
                     </div>
 
+
+
+
+
                     <!-- Finał -->
-                    <div class="carousel-item">
+                    <div class="carousel-item"
+                         th:if="${!#lists.isEmpty(finals)}"
+                         th:classappend="${activeStage == T(com.betatfamily.mundial_typer.entity.CupStage).FINAL} ? ' active'">
+
 
                         <div class="bracket-single-round">
+
 
                             <h4 class="text-center mb-4">
                                 Finał
                             </h4>
 
+
                             <div class="round-matches">
 
-                                <div class="match-box">
 
-                                    <div class="player-row">
-                                        <span>Zwycięzca SF1</span>
-                                        <strong>0</strong>
+                                <a th:each="dto : ${finals}"
+                                   th:href="@{'/cup/match/' + ${dto.match.id}}"
+                                   class="match-box">
+
+
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id} ? 'winner' : ''">
+
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player1Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:if="${dto.match.player1 != null}"
+                                                  th:text="${dto.match.player1.firstName + ' ' + dto.match.player1.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id}">
+                                                🏆
+                                            </span>
+
+                                            <span th:if="${dto.match.player1 == null}">
+                                                Oczekiwanie
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong class="score"
+                                                th:text="${dto.player1Points != null ? dto.player1Points : 0}">
+                                        </strong>
+
+
                                     </div>
 
-                                    <div class="player-row">
-                                        <span>Zwycięzca SF2</span>
-                                        <strong>0</strong>
+
+                                    <div class="player-row"
+                                         th:classappend="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player1.id} ? 'winner' : ''">
+
+
+                                        <div class="player-name">
+
+                                            <span class="text-muted"
+                                                  th:text="'(' + ${dto.match.player2Seed.seed} + ') '">
+                                            </span>
+
+                                            <span th:if="${dto.match.player2 != null}"
+                                                  th:text="${dto.match.player2.firstName + ' ' + dto.match.player2.lastName}">
+                                            </span>
+
+                                            <span th:if="${dto.match.winner != null
+                                                    and dto.match.winner.id == dto.match.player2.id}">
+                                                🏆
+                                            </span>
+
+                                            <span th:if="${dto.match.player2 == null}">
+                                                Oczekiwanie
+                                            </span>
+
+                                        </div>
+
+
+                                        <strong class="score"
+                                                th:text="${dto.player2Points != null ? dto.player2Points : 0}">
+                                        </strong>
+
+
                                     </div>
 
-                                </div>
+
+                                </a>
+
 
                             </div>
 
+
                         </div>
+
 
                     </div>
 
+
                 </div>
+
+
 
                 <button class="carousel-control-prev"
                         type="button"
@@ -386,6 +611,7 @@
 
                 </button>
 
+
                 <button class="carousel-control-next"
                         type="button"
                         data-bs-target="#cupBracket"
@@ -395,12 +621,10 @@
 
                 </button>
 
+
             </div>
 
         </div>
-
-
-    </div>
 
 </div>
 

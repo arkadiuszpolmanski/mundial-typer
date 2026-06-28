@@ -37,6 +37,12 @@
             font-weight: 700;
         }
 
+        .round-name {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
     </style>
 
 </head>
@@ -219,14 +225,6 @@
 
                 <div class="card h-100 text-center p-3 shadow-sm match-clickable">
 
-                    <!-- ROUND -->
-                    <div class="text-center mb-2">
-                    <span th:if="${match.round != null}"
-                          class="badge bg-priamry px-3 py-2"
-                          th:text="${match.round.label}">
-                    </span>
-                    </div>
-
                     <!-- MATCH STATUS -->
                     <div class="mb-2">
 
@@ -246,6 +244,11 @@
 
                             </span>
 
+                    </div>
+
+                    <!-- ROUND -->
+                    <div class="round-name text-truncate">
+                        <span th:text="${match.round.label}"></span>
                     </div>
 
                     <!-- TEAMS -->

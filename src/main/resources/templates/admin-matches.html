@@ -157,8 +157,14 @@
                         Edytuj
                     </a>
 
-                    <form method="post" action="/admin/delete-match">
-                        <input type="hidden" name="matchId" th:value="${match.id}">
+                    <form method="post"
+                          action="/admin/delete-match"
+                          onsubmit="return confirm('Czy na pewno chcesz usunąć ten mecz?');">
+
+                        <input type="hidden"
+                               name="matchId"
+                               th:value="${match.id}">
+
                         <button class="btn btn-outline-danger btn-sm">
                             Usuń
                         </button>

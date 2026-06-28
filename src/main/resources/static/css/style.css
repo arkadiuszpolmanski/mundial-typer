@@ -599,3 +599,11 @@ td.bronze {
 .round-matches .match-box {
     width: 100%;
 }
+
+.player-row {
+    transition: .2s;
+}
+
+.player-row.winner {
+    font-weight:800;
+}

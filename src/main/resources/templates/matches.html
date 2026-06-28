@@ -37,6 +37,12 @@
             white-space: nowrap;
         }
 
+        .round-name {
+            font-size: 14px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
     </style>
 
 </head>
@@ -90,18 +96,9 @@
 
             <!-- LINK CARD -->
             <a th:href="@{'/match/' + ${match.id}}"
-               class="text-decoration-none text-dark">
+               class="text-decoration-none text-dark d-block">
 
                 <div class="card shadow-sm match-card p-3 match-clickable">
-
-                        <!-- ROUND -->
-                        <div class="text-center mb-2">
-                                <span th:if="${match.round != null}"
-                                      class="badge bg-priamry px-3 py-2"
-                                      th:text="${match.round.label}">
-                                </span>
-                        </div>
-
 
                     <!-- STATUS -->
                     <div class="mb-2 text-start">
@@ -125,6 +122,11 @@
 
                     <!-- TEAMS + SCORE -->
                     <div class="row align-items-center text-center w-100">
+
+                        <!--ROUND-->
+                        <div class="round-name text-truncate">
+                            <span th:text="${match.round.label}"></span>
+                        </div>
 
                         <!-- HOME -->
                         <div class="col-5 d-flex flex-column align-items-center">

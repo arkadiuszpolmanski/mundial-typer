@@ -41,6 +41,9 @@ public class AdminController {
     @Autowired
     private CupSeedRepository cupSeedRepository;
 
+    @Autowired
+    private CupMatchRepository cupMatchRepository;
+
     @GetMapping("/admin/world-cup-winner")
     public String worldCupWinnerPage(Model model, Authentication auth) {
 
@@ -291,12 +294,34 @@ public class AdminController {
                            Authentication auth) {
 
         TournamentConfig config = configRepository.findById(1L).orElseThrow();
-
         User user = userRepository.findByUsername(auth.getName());
+
+        boolean finalGenerated = !cupMatchRepository.findByStageOrderByBracketPosition(CupStage.FINAL).isEmpty();
+
+        CupMatch finalMatch = cupMatchRepository.findByStageOrderByBracketPosition(CupStage.FINAL).stream().findFirst().orElse(null);
+        boolean winnerGenerated = finalMatch != null && finalMatch.getWinner() != null;
+
         model.addAttribute("user", user);
         model.addAttribute("cupVisible", config.getCupVisible());
         model.addAttribute("bracketVisible", config.getBracketVisible());
+        model.addAttribute("finalGenerated", finalGenerated);
+        model.addAttribute("winnerGenerated", winnerGenerated);
         model.addAttribute("seeds", cupSeedRepository.findAllByOrderBySeedAsc());
+        model.addAttribute("of16",
+                cupMatchRepository.findByStageOrderByBracketPosition(
+                        CupStage.OF_16));
+
+        model.addAttribute("quarterFinals",
+                cupMatchRepository.findByStageOrderByBracketPosition(
+                        CupStage.QUARTER_FINAL));
+
+        model.addAttribute("semiFinals",
+                cupMatchRepository.findByStageOrderByBracketPosition(
+                        CupStage.SEMI_FINAL));
+
+        model.addAttribute("finals",
+                cupMatchRepository.findByStageOrderByBracketPosition(
+                        CupStage.FINAL));
 
         return "admin-cup";
     }
@@ -312,6 +337,17 @@ public class AdminController {
         return "redirect:/admin/cup";
     }
 
+    @PostMapping("/admin/cup/toggle-bracket")
+    public String toggleBracket() {
+
+        TournamentConfig config = configRepository.findById(1L).orElseThrow();
+
+        config.setBracketVisible(!config.getBracketVisible());
+        configRepository.save(config);
+
+        return "redirect:/admin/cup";
+    }
+
     @PostMapping("/admin/cup/generate-seeds")
     public String generateCupSeeds() {
 
@@ -320,21 +356,42 @@ public class AdminController {
         return "redirect:/admin/cup";
     }
 
-    @PostMapping("/admin/cup/generate-bracket")
-    public String generateBracket() {
+    @PostMapping("/admin/cup/generate-of16")
+    public String generateOf16() {
 
-        cupService.generateBracket();
+        cupService.generateRoundOf16();
 
         return "redirect:/admin/cup";
     }
 
-    @PostMapping("/admin/cup/toggle-bracket")
-    public String toggleBracket() {
+    @PostMapping("/admin/cup/generate-quarter")
+    public String generateQuarterFinal() {
 
-        TournamentConfig config = configRepository.findById(1L).orElseThrow();
+        cupService.generateQuarterFinals();
 
-        config.setBracketVisible(!config.getBracketVisible());
-        configRepository.save(config);
+        return "redirect:/admin/cup";
+    }
+
+    @PostMapping("/admin/cup/generate-semi")
+    public String generateSemiFinal() {
+
+        cupService.generateSemiFinals();
+
+        return "redirect:/admin/cup";
+    }
+
+    @PostMapping("/admin/cup/generate-final")
+    public String generateFinal() {
+
+        cupService.generateFinal();
+
+        return "redirect:/admin/cup";
+    }
+
+    @PostMapping("/admin/cup/finish-final")
+    public String finishFinal() {
+
+        cupService.finishFinal();
 
         return "redirect:/admin/cup";
     }
