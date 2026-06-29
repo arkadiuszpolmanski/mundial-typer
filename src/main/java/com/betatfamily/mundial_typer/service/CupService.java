@@ -565,4 +565,21 @@ public class CupService {
                 })
                 .toList();
     }
+
+    public CupMatch getUserCupMatch(User user) {
+
+        List<CupMatch> matches = cupMatchRepository.findByPlayer1OrPlayer2(user, user);
+
+        return matches.stream()
+                .filter(m -> m.getWinner() == null)
+                .max(Comparator.comparing(
+                        m -> m.getStage().ordinal()
+                ))
+                .orElse(matches.stream()
+                        .max(Comparator.comparing(
+                                m -> m.getStage().ordinal()
+                        ))
+                        .orElse(null)
+                );
+    }
 }
