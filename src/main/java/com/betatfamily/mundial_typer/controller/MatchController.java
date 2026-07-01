@@ -14,10 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 public class MatchController {
@@ -124,6 +122,15 @@ public class MatchController {
         model.addAttribute("started", started);
         model.addAttribute("predictions", predictions);
         model.addAttribute("myPrediction", myPrediction);
+
+        Set<Long> predictedUserIds = predictions.stream()
+                .map(p -> p.getUser().getId())
+                .collect(Collectors.toSet());
+
+        List<User> users = userRepository.findAllByOrderByFirstNameAscLastNameAsc();
+
+        model.addAttribute("users", users);
+        model.addAttribute("predictedUserIds", predictedUserIds);
 
         return "match";
     }

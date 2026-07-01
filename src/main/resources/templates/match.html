@@ -182,14 +182,22 @@
 
         <h5 class="text-center mb-3">Typy użytkowników</h5>
 
-        <div th:if="${started}">
+        <div th:if="${!started}" class="text-muted text-center">
+            🔒 Typy ukryte do rozpoczęcia meczu
+        </div>
 
-            <div th:each="p : ${predictions}"
-                 class="border rounded p-2 mb-2 text-center">
+        <hr th:if="${!started}">
 
-                <strong th:text="${p.user.firstName + ' ' + p.user.lastName}"></strong>
+        <div th:each="u : ${users}"
+             class="border rounded p-2 mb-2 text-center">
 
-                <span>:</span>
+            <strong th:text="${u.firstName + ' ' + u.lastName}"></strong>
+
+            <!-- Mecz rozpoczęty i użytkownik ma typ -->
+            <span th:if="${started && predictedUserIds.contains(u.id)}">
+            :
+            <span th:each="p : ${predictions}"
+                  th:if="${p.user.id == u.id}">
 
                 <span th:text="${p.predictedHome}"></span>
                 -
@@ -202,26 +210,22 @@
                       th:text="${p.points} + ' pkt'">
                 </span>
 
-            </div>
+            </span>
 
-        </div>
+        </span>
 
-        <div th:if="${!started}">
+            <!-- Przed meczem i użytkownik ma typ -->
+            <span th:if="${!started && predictedUserIds.contains(u.id)}"
+                  class="text-success">
+                ✔ typ oddany
+            </span>
 
-            <div class="text-muted text-center">
-                🔒 Typy ukryte do rozpoczęcia meczu
-            </div>
+            <!-- Brak typu -->
+            <span th:unless="${predictedUserIds.contains(u.id)}"
+                  class="text-danger">
+                ✘ brak typu
+            </span>
 
-            <hr>
-
-            <div th:each="p : ${predictions}"
-                 class="border rounded p-2 mb-2 text-center">
-
-                <strong th:text="${p.user.firstName + ' ' + p.user.lastName}"></strong>
-
-                <span class="text-success"> ✔ typ oddany</span>
-
-            </div>
         </div>
 
     </div>
